@@ -57,7 +57,7 @@ class Truth(object):
 def solve(num):
     """main function"""
     good_eggs = []
-    for ind in range(2**(2**num - 1)):
+    for ind in range(2**(2**num - 1)):#pylint: disable=too-many-nested-blocks
         arr = list([int(i) for i in binary_fixed_length(ind, 2**num)])
         truth = Truth(arr)
         total_good = False
@@ -68,11 +68,11 @@ def solve(num):
                 for i in range(2**(num - 1)):
                     array = [int(j) for j in list(binary_fixed_length(i, num - 1))]
                     array.insert(index, fixed_val)
-                if is_fixed is None:
-                    is_fixed = truth.function_format(array)
-                else:
-                    if is_fixed != truth.function_format(array):
-                        is_good = False
+                    if is_fixed is None:
+                        is_fixed = truth.function_format(array)
+                    else:
+                        if is_fixed != truth.function_format(array):
+                            is_good = False
             if is_good:
                 total_good = True
         if total_good:

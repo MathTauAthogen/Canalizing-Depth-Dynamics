@@ -138,8 +138,8 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
             dynamic = Dynamical(i[:], functions_formatted)
             oldstates = [i[:]]
             dynamic.iterate()
-            while not dynamic.current in oldstates or scour(
-                    dynamic.current, attractors_and_bassinets, 3):
+            while not (dynamic.current in oldstates or scour(
+                    dynamic.current, attractors_and_bassinets, 3)):
                 oldstates.append(dynamic.current)
                 dynamic.iterate()
             if dynamic.current in oldstates and not scour(
