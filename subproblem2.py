@@ -73,13 +73,13 @@ def solve(num):
                     else:
                         if is_fixed != truth.function_format(array):
                             is_good = False
-            if is_good:
-                total_good = True
+                if is_good:
+                    total_good = True
+
         if total_good:
             good_eggs.append(arr)
             good_eggs.append(conjugate(arr))
     good_eggs = invert(good_eggs, 2**num)
-    #print(len(good_eggs))
     return good_eggs
 
 def conjugate(func):
