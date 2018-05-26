@@ -118,7 +118,7 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
         else:
             raise Exception(
                 "No. Just no. You have to pass in function representations of valid lengths!")
-    for _, val in range(len(functions)):
+    for _, val in enumerate(functions):
         if len(functions) == math.log(len(val), 2):
             pass
         else:
