@@ -6,97 +6,89 @@ import math
 import time
 
 def invert(strings, length):
-  temp = []
-  for k in range(2**(length - 1)):
-    test = list([int(i) for i in binary_fixed_length(k, length)])
-    if(test not in strings):
-      temp.append(test)
-      temp.append(conjugate(test))
-  return temp
+    """Outputs a list of all of the binary strings with length digits that aren't in strings."""
+    temp = []
+    for k in range(2**(length - 1)):
+        test = list([int(i) for i in binary_fixed_length(k, length)])
+        if test not in strings:
+            temp.append(test)
+            temp.append(conjugate(test))
+    return temp
 
 
 def binary(myint):
+    """Returns the binary representation of myint as a string."""
     return "{0:b}".format(myint)
 
-def binary_fixed_length(myint,length):
+
+def binary_fixed_length(myint, length):
+    """ Returns a zero-padded (of length length) binary representation of myint"""
     return binary(myint).zfill(length)
 
-class dynamical:
-  def __init__(self, initial, functions):
-    self.initial = initial
-    self.functions = functions
-    self.current = initial
-  def iterate(self):
-    now = self.current
-    temp = [-1] * len(self.functions)
-    for i in range(len(self.functions)):
-      temp[i] = self.functions[i].function_format(now)
-    self.current = temp[:]
-
-class truth:
+class Truth(object):
+    """This is how I store functions."""
     def __init__(self, table):
         self.table = table
-
-        self.n = len(self.table)
-
-        if(math.log2(self.n).is_integer()):
+        self.num = len(self.table)
+        if math.log(self.num, 2).is_integer():
             pass
         else:
-            raise Exception("No. Just no. You have to pass in a function representation of valid length!")
+            raise Exception(
+                "No. Just no. You have to pass in a function representation of valid length!")
 
         self.myrows = []
 
-        for k in range(self.n):
-            self.myrows.append(list([int(i) for i in binary_fixed_length(k, int(math.log2(self.n)))]))
+        for k in range(self.num):
+            self.myrows.append(list(
+                [int(i)for i in binary_fixed_length(k, int(math.log(self.num, 2)))]))
 
-
-    def function_format(self, row):#returns -1 upon failure or else the correct 0 or 1 value.
+    def function_format(self, row):  #returns -1 upon failure or else the correct 0 or 1 value.
+        """Plug in a row to get the corresponding value of the function"""
         try:
             i = self.myrows.index(row)
             return self.table[i]
-        except:
+        except ValueError:
             return -1
 
     def return_truth_table(self):
+        """ Get the truth table in our agreed-upon format."""
         return self.table
 
-#function_format can be abbreviated in the class definition to increase the savings using this method.
-
-#This will also be better for the second subproblem, because in so doing we are able to, instead of plugging in indices of the function, set one of the variables and then vary the others by iterating through all possible numbers between 1 and 2^{n-1} and converting them to binary and then essentially placing them around the fixed value. For example, in three variables with the second fixed at 0, we get 1 = 01 --> [0,0,1] and 2 = 10 --> [1,0,0], etc. A way we could do this of course could be first to get the number into a list, then insert the right value at the right spot using a list operation.
-
-def solve(n):
-  goodEggs = []
-  for v in range(2**(2**n - 1)):
-    v = list([int(i) for i in binary_fixed_length(v, 2**n)])
-    a = truth(v)
-    totalGood = False
-    for index in range(n):
-      for fixed_val in range(2):
-        isGood = True
-        isFixed = None
-        for i in range(2**(n - 1)):
-          array = [int(j) for j in list(binary_fixed_length(i, n - 1))]
-          array.insert(index, fixed_val)
-          if(isFixed == None):
-              isFixed = a.function_format(array)
-          else:
-              if(isFixed != a.function_format(array)):
-                isGood = False
-        if(isGood):
-          totalGood = True
-    if(totalGood):
-      goodEggs.append(v)
-      goodEggs.append(conjugate(v))
-  goodEggs = invert(goodEggs,2**n)
-  #print(len(goodEggs))
-  return goodEggs
+def solve(num):
+    """main function"""
+    good_eggs = []
+    for ind in range(2**(2**num - 1)):
+        arr = list([int(i) for i in binary_fixed_length(ind, 2**num)])
+        truth = Truth(arr)
+        total_good = False
+        for index in range(num):
+            for fixed_val in range(2):
+                is_good = True
+                is_fixed = None
+                for i in range(2**(num - 1)):
+                    array = [int(j) for j in list(binary_fixed_length(i, num - 1))]
+                    array.insert(index, fixed_val)
+                if is_fixed is None:
+                    is_fixed = truth.function_format(array)
+                else:
+                    if is_fixed != truth.function_format(array):
+                        is_good = False
+            if is_good:
+                total_good = True
+        if total_good:
+            good_eggs.append(arr)
+            good_eggs.append(conjugate(arr))
+    good_eggs = invert(good_eggs, 2**num)
+    #print(len(good_eggs))
+    return good_eggs
 
 def conjugate(func):
-    return [(1-func[i]) for i in range (len(func))]
+    """Replaces each element of func with the opposite value"""
+    return [(1-func[i]) for i in range(len(func))]
 
-start_time = time.time()
-x = solve(4)
-end_time = time.time()
-print(x)
-print(len(x))
-print(end_time-start_time)
+START_TIME = time.time()
+X = solve(4)
+END_TIME = time.time()
+print X
+print len(X)
+print END_TIME-START_TIME

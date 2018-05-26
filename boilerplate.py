@@ -43,6 +43,23 @@ class Truth(object):
         """ Get the truth table in our agreed-upon format."""
         return self.table
 
+class Dynamical(object):
+    """The class that stores the discrete dynamical system"""
+    def __init__(self, initial, functions):
+        self.initial = initial
+        self.functions = functions
+        self.current = initial
+    def iterate(self):
+        """ Increases the time by 1"""
+        now = self.current
+        temp = [-1] * len(self.functions)
+        for i in range(len(self.functions)):
+            temp[i] = self.functions[i].function_format(now)
+        self.current = temp[:]
+    def placeholder(self):
+        """ Not enough public methods otherwise"""
+        pass
+
 print "F1RST P0ST: " + str(Truth([0, 1]).function_format([1]))
 
 #Okay, now starting to make an object first.
