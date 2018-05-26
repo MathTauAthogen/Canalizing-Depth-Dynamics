@@ -110,7 +110,7 @@ def get_attractors_and_bassinets(functions):#intakes in agreed-upon format
   functions_formatted = []
   for i in functions:
     functions_formatted.append(truth(i))
-  attractors_and_bassinets = [[],[]]
+  attractors_and_bassinets = [[], []]
   for i in range(len(functions[0])):
      # i = list([int(j) for j in binary_fixed_length(i, int(math.log2(len(functions[0]))))])
       i = [int(j) for j in binary_fixed_length(i, int(math.log2(len(functions[0]))))]
@@ -128,11 +128,11 @@ def get_attractors_and_bassinets(functions):#intakes in agreed-upon format
           attractors_and_bassinets[0].append(new_attractor)
           new_bassinet = oldstates
           attractors_and_bassinets[1].append(new_bassinet)
-        elif(scour(a.current,attractors_and_bassinets[0],2)):
+        elif(scour(a.current, attractors_and_bassinets[0], 2)):
           new_bassinet = oldstates
-          index = scan(a.current,attractors_and_bassinets[0], 2)
+          index = scan(a.current, attractors_and_bassinets[0], 2)
           attractors_and_bassinets[1][index] = mergelists(attractors_and_bassinets[1][index], new_bassinet)
-        elif(scour(a.current,attractors_and_bassinets[1], 2)):
+        elif(scour(a.current, attractors_and_bassinets[1], 2)):
           new_bassinet = oldstates
           index = scan(a.current, attractors_and_bassinets[1], 2)
           attractors_and_bassinets[1][index] = mergelists(attractors_and_bassinets[1][index], new_bassinet)
@@ -148,5 +148,5 @@ def get_attractors_and_bassinets(functions):#intakes in agreed-upon format
 
 
 #BEGIN TESTING CODE
-print(get_attractors_and_bassinets([[0,0,0,1],[0,1,1,1]]))#The parameter is a list of lists. This can be changed. I do error handling.
+print(get_attractors_and_bassinets([[0, 0, 0, 1], [0, 1, 1, 1]]))#The parameter is a list of lists. This can be changed. I do error handling.
 #END TESTING CODE
