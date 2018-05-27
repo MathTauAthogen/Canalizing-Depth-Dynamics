@@ -27,18 +27,18 @@ def graph_data(degree, points):
     average_number_of_attractors = sum(num_attractors) / (1.0 * points)
     average_attractor_size = sum(attractor_sizes) / (1.0 * points)
     average_bassinet_size = sum(bassinet_sizes) / (1.0 * points)
-    print(average_number_of_attractors)
+    print average_number_of_attractors
     bar_range = [i - 0.5 for i in range(min(num_attractors), max(num_attractors) + 2)]
     plt.subplot(3, 1, 1)
     plt.title("Attractor Quantities")
     plt.hist(num_attractors, bar_range, ec='black')
-    print(average_attractor_size)
+    print average_attractor_size
     plt.subplot(3, 1, 2)
     plt.title("Attractor Sizes")
 
     bar_range = [i - 0.5 for i in range(min(attractor_sizes), max(attractor_sizes) + 2)]
     plt.hist(attractor_sizes, bar_range, ec='black')
-    print(average_bassinet_size)
+    print average_bassinet_size
     plt.subplot(3, 1, 3)
     plt.title("Bassinet Sizes")
 
