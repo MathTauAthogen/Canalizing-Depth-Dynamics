@@ -3,6 +3,7 @@ This is my code for sub-problem 1.
 """
 
 import math
+import boilerplate as bp
 
 def mergelists(my_list, my_second_list):
     """Merge two lists"""
@@ -15,15 +16,6 @@ def mergelists(my_list, my_second_list):
     newlist.sort()
     return newlist
 
-def binary(my_int):
-    """Returns the binary representation of my_int as a string."""
-    return "{0:b}".format(my_int)
-
-
-def binary_fixed_length(my_int, length):
-    """ Returns a zero-padded (of length length) binary representation of my_int"""
-    return binary(my_int).zfill(length)
-
 def remove(my_list, element):
     """ Removes all instances of element from my_list"""
     try:
@@ -32,53 +24,6 @@ def remove(my_list, element):
         remove(my_list, element)
     except ValueError:
         pass
-
-
-class Dynamical(object):
-    """The class that stores the discrete dynamical system"""
-    def __init__(self, initial, functions):
-        self.initial = initial
-        self.functions = functions
-        self.current = initial
-    def iterate(self):
-        """ Increases the time by 1"""
-        now = self.current
-        temp = [-1] * len(self.functions)
-        for i in range(len(self.functions)):
-            temp[i] = self.functions[i].function_format(now)
-        self.current = temp[:]
-    def placeholder(self):
-        """ Not enough public methods otherwise"""
-        pass
-
-class Truth(object):
-    """This is how I store functions."""
-    def __init__(self, table):
-        self.table = table
-        self.num = len(self.table)
-        if math.log(self.num, 2).is_integer():
-            pass
-        else:
-            raise Exception(
-                "No. Just no. You have to pass in a function representation of valid length!")
-
-        self.my_rows = []
-
-        for k in range(self.num):
-            self.my_rows.append(list(
-                [int(i)for i in binary_fixed_length(k, int(math.log(self.num, 2)))]))
-
-    def function_format(self, row):  #returns -1 upon failure or else the correct 0 or 1 value.
-        """Plug in a row to get the corresponding value of the function"""
-        try:
-            i = self.my_rows.index(row)
-            return self.table[i]
-        except ValueError:
-            return -1
-
-    def return_truth_table(self):
-        """ Get the truth table in our agreed-upon format."""
-        return self.table
 
 def scan(thing, array, depth):
     """Gets the index in array that contains thing at its depth-1"""
@@ -127,15 +72,15 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
                 + "size of functions for the number of variables!")
     functions_formatted = []
     for i in functions:
-        functions_formatted.append(Truth(i))
+        functions_formatted.append(bp.Truth(i))
     attractors_and_bassinets = [[], []]
     for i in range(len(functions[0])):
         # i = list([int(j) for j in binary_fixed_length(i, int(math.log(len(functions[0]), 2)))])
-        i = [int(j) for j in binary_fixed_length(i, int(math.log(len(functions[0]), 2)))]
+        i = [int(j) for j in bp.binary_fixed_length(i, int(math.log(len(functions[0]), 2)))]
         if scour(i, attractors_and_bassinets, 2):
             continue
         else:
-            dynamic = Dynamical(i[:], functions_formatted)
+            dynamic = bp.Dynamical(i[:], functions_formatted)
             oldstates = [i[:]]
             dynamic.iterate()
             while not (dynamic.current in oldstates or scour(

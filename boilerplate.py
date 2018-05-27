@@ -59,13 +59,3 @@ class Dynamical(object):
     def placeholder(self):
         """ Not enough public methods otherwise"""
         pass
-
-print "F1RST P0ST: " + str(Truth([0, 1]).function_format([1]))
-
-#Okay, now starting to make an object first.
-A = Truth([0, 0, 0, 0, 1, 0, 1, 1])
-print A.function_format([0, 0, 0])
-print A.function_format([0, 1, 0])
-print A.function_format([1, 0, 0])
-print A.function_format([0, 0, 1])
-print A.function_format([1, 1, 1])
