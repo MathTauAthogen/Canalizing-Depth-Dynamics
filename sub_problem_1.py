@@ -97,7 +97,6 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     for i in range(len(attractors_and_bassinets[0])):
         for j in attractors_and_bassinets[0][i]:
             bp.remove(attractors_and_bassinets[1][i], j)
-    print attractors_and_bassinets
     tuples = []
     for i in range(len(attractors_and_bassinets[0])):
         tuples.append([len(attractors_and_bassinets[0][i]), len(attractors_and_bassinets[1][i])])
@@ -106,5 +105,5 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
 
 
 #BEGIN TESTING CODE
-print get_attractors_and_bassinets([[0, 0, 0, 1], [0, 1, 1, 1]])
+#print get_attractors_and_bassinets([[0, 0, 0, 1], [0, 1, 1, 1]])
 #END TESTING CODE

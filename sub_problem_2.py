@@ -42,9 +42,9 @@ def conjugate(func):
     """Replaces each element of func with the opposite value"""
     return [(1-func[i]) for i in range(len(func))]
 
-START_TIME = time.time()
-X = solve(3)
-END_TIME = time.time()
-print X
-print len(X)
-print END_TIME-START_TIME
+#START_TIME = time.time()
+#X = solve(3)
+#END_TIME = time.time()
+#print X
+#print len(X)
+#print END_TIME-START_TIME
