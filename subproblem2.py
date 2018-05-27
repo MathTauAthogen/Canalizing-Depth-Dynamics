@@ -5,15 +5,7 @@ This is my code for sub-problem 2.
 import time
 import boilerplate as bp
 
-def invert(strings, length):
-    """Outputs a list of all of the binary strings with length digits that aren't in strings."""
-    temp = []
-    for k in range(2**(length - 1)):
-        test = list([int(i) for i in bp.binary_fixed_length(k, length)])
-        if test not in strings:
-            temp.append(test)
-            temp.append(conjugate(test))
-    return temp
+
 
 def solve(num):
     """main function"""
@@ -43,7 +35,7 @@ def solve(num):
         if total_good:
             good_eggs.append(arr)
             good_eggs.append(conjugate(arr))
-    good_eggs = invert(good_eggs, 2**num)
+    good_eggs = bp.invert(good_eggs, 2**num)
     return good_eggs
 
 def conjugate(func):

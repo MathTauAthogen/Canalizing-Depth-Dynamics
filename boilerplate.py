@@ -3,6 +3,21 @@ This is my boilerplate code.
 """
 import math
 
+def binary_not(val):
+    """Does the binary not operation on val."""
+    if val == 1:#pylint: disable=no-else-return
+        return 0
+    else:
+        return 1
+
+def remove(my_list, element):
+    """ Removes all instances of element from my_list"""
+    try:
+        index = my_list.index(element)
+        my_list.pop(index)
+        remove(my_list, element)
+    except ValueError:
+        pass
 
 def binary(my_int):
     """Returns the binary representation of my_int as a string."""
@@ -13,6 +28,14 @@ def binary_fixed_length(my_int, length):
     """ Returns a zero-padded (of length length) binary representation of my_int"""
     return binary(my_int).zfill(length)
 
+def invert(strings, length):
+    """Outputs a list of all of the binary strings with length digits that aren't in strings."""
+    temp = []
+    for k in range(2**(length - 1)):
+        test = list([int(i) for i in binary_fixed_length(k, length)])
+        if test not in strings:
+            temp.append(test)
+    return temp
 
 class Truth(object):
     """This is how I store functions."""

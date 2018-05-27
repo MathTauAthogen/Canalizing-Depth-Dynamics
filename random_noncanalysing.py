@@ -3,6 +3,7 @@
 #Import statements
 import math
 import random
+import time
 import boilerplate as bp
 
 #Boilerplates
@@ -21,14 +22,12 @@ def near_rand_string(length, exceptions):
     exceptions as a list of lists representing binary strings.
     Output format notes:
     Outputs a list representing a binary string."""
-    string = rand_string(length)
-    while True:
-        try:
-            _ = exceptions.index(string) #Fails if string isn't an exception, and then breaks.
-            string = rand_string(length) #Never gets reached if the first line fails.
-        except ValueError:
-            break
-    return string
+    possibilities = bp.invert(exceptions, length)
+    try:
+        index = random.randint(0, len(possibilities) - 1)
+    except ValueError:
+        index = 0
+    return possibilities[index]
 
 def get_first_vals_list(num, val):
     """Generates a list of lists denoting when the variable number list-index is val."""
@@ -46,13 +45,21 @@ def get_first_vals_list(num, val):
         outerlist.append(innerlist)
     return outerlist
 
-def isuniform(my_list):
+def is_uniform(my_list):
     """Checks to see if a list only consists of one distinct element."""
-    initial = my_list[0]
-    for _, val in enumerate(my_list):
-        if val != initial:
-            return False
-    return True
+    try:
+        initial = my_list[0]
+        for _, val in enumerate(my_list):
+            if val != initial:
+                return False
+        return True
+    except IndexError:
+        return False #Needed specifically for this program to default here
+
+def overwrite_at(my_list, index, seq):
+    """Overwrites elements my_list starting from index using seq as a template"""
+    for i, val in enumerate(seq):
+        my_list[index + i] = val
 
 #Main function
 def random_noncanalysing_func(num_vars):
@@ -64,11 +71,50 @@ def random_noncanalysing_func(num_vars):
     first_vals_zero = get_first_vals_list(num_vars, 0)
     first_vals_one = get_first_vals_list(num_vars, 1)
     counter = 2 ** num_vars
+    place = 0
     for i in range(num_vars):
-        if counter != 1:
-            pass
         counter = int(counter / 2)
+        tempo = [table[a] for a in first_vals_zero[i]]
+        temp = []
+        for j in tempo:
+            if j != -1:
+                temp.append(i)
+        if is_uniform(temp):
+            try:
+                overwrite_at(
+                    table, place, near_rand_string(counter, [[0] * counter, [1] * counter]))
+                place += counter
+            except IndexError:
+                overwrite_at(table, place, [bp.binary_not(temp[0])])
+                place += counter
+        else:
+            overwrite_at(table, place, rand_string(counter))
+            place += counter
+    first_ones = [table[i] for i in first_vals_one[0]][:-1]
+    if is_uniform(first_ones):
+        table[-1] = 1 if first_ones[0] == 0 else 0
+    else:
+        table[-1] = random.randint(0, 1)
+    #Fix up stuff here
+    already_changed = []
+    ready = False
+    while not ready:
+        ready = True
+        for i in range(num_vars):
+            counter = int(counter / 2)
+            temp = [table[a] for a in first_vals_one[i]]
+            if is_uniform(temp):
+                ready = False
+                to_sort = first_vals_one[i]
+                to_sort.sort()
+                for j in already_changed:
+                    bp.remove(to_sort, j)
+                table[to_sort[-1]] = bp.binary_not(table[to_sort[-1]])
+    #End in-progress section
     return bp.Truth(table)
 
 #Testing
-print random_noncanalysing_func(3).return_truth_table()
+START_TIME = time.time()
+print random_noncanalysing_func(6).return_truth_table()
+END_TIME = time.time()
+print END_TIME-START_TIME

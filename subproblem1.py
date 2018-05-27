@@ -16,15 +16,6 @@ def mergelists(my_list, my_second_list):
     newlist.sort()
     return newlist
 
-def remove(my_list, element):
-    """ Removes all instances of element from my_list"""
-    try:
-        index = my_list.index(element)
-        my_list.pop(index)
-        remove(my_list, element)
-    except ValueError:
-        pass
-
 def scan(thing, array, depth):
     """Gets the index in array that contains thing at its depth-1"""
     if depth > 1:
@@ -105,7 +96,7 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
                     attractors_and_bassinets[1][index], new_bassinet)
     for i in range(len(attractors_and_bassinets[0])):
         for j in attractors_and_bassinets[0][i]:
-            remove(attractors_and_bassinets[1][i], j)
+            bp.remove(attractors_and_bassinets[1][i], j)
     print attractors_and_bassinets
     tuples = []
     for i in range(len(attractors_and_bassinets[0])):
