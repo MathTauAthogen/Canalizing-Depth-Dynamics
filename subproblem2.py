@@ -40,7 +40,7 @@ class Truth(object):
 
         for k in range(self.num):
             self.myrows.append(list(
-                [int(i)for i in binary_fixed_length(k, int(math.log(self.num, 2)))]))
+                [int(i) for i in binary_fixed_length(k, int(math.log(self.num, 2)))]))
 
     def function_format(self, row):  #returns -1 upon failure or else the correct 0 or 1 value.
         """Plug in a row to get the corresponding value of the function"""
@@ -75,6 +75,9 @@ def solve(num):
                             is_good = False
                 if is_good:
                     total_good = True
+                    break
+            if total_good:
+                break
 
         if total_good:
             good_eggs.append(arr)
@@ -87,7 +90,7 @@ def conjugate(func):
     return [(1-func[i]) for i in range(len(func))]
 
 START_TIME = time.time()
-X = solve(4)
+X = solve(2)
 END_TIME = time.time()
 print X
 print len(X)
