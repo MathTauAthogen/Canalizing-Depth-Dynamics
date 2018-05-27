@@ -3,7 +3,6 @@
 #Import statements
 import math
 import random
-import time
 import boilerplate as bp
 
 #Boilerplates
@@ -22,12 +21,14 @@ def near_rand_string(length, exceptions):
     exceptions as a list of lists representing binary strings.
     Output format notes:
     Outputs a list representing a binary string."""
-    possibilities = bp.invert(exceptions, length)
-    try:
-        index = random.randint(0, len(possibilities) - 1)
-    except ValueError:
-        index = 0
-    return possibilities[index]
+    string = rand_string(length)
+    while True:
+        try:
+            _ = exceptions.index(string)
+            string = rand_string(length)
+        except ValueError:
+            break
+    return string
 
 def get_first_vals_list(num, val):
     """Generates a list of lists denoting when the variable number list-index is val."""
@@ -63,6 +64,7 @@ def overwrite_at(my_list, index, seq):
 
 #Main function
 def random_noncanalysing_func(num_vars):
+    #pylint: disable=too-many-branches
     """Generates a random non-canalysing function on num_vars variables.
     Output format notes:
     It outputs a class with the format we agreed upon.
@@ -80,11 +82,11 @@ def random_noncanalysing_func(num_vars):
             if j != -1:
                 temp.append(i)
         if is_uniform(temp):
-            try:
+            if counter != 1:
                 overwrite_at(
                     table, place, near_rand_string(counter, [[0] * counter, [1] * counter]))
                 place += counter
-            except IndexError:
+            else:
                 overwrite_at(table, place, [bp.binary_not(temp[0])])
                 place += counter
         else:
@@ -112,9 +114,3 @@ def random_noncanalysing_func(num_vars):
                 table[to_sort[-1]] = bp.binary_not(table[to_sort[-1]])
     #End in-progress section
     return bp.Truth(table)
-
-#Testing
-START_TIME = time.time()
-print random_noncanalysing_func(6).return_truth_table()
-END_TIME = time.time()
-print END_TIME-START_TIME
