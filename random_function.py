@@ -168,7 +168,7 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
 def random_function(degree):
     """Generates a random function in n variables"""
     function = [0] * 2 ** degree
-    for i in range(len(function)):
+    for i in range(len(function)):#pylint: disable=consider-using-enumerate
         function[i] = random.randint(0, 1)
     return function
 
