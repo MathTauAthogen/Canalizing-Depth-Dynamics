@@ -4,32 +4,32 @@ This is my code for sub-problem 1.
 
 import math
 
-def mergelists(lista, listb):
+def mergelists(my_list, my_second_list):
     """Merge two lists"""
     newlist = []
-    for i in lista:
+    for i in my_list:
         newlist.append(i)
-    for elem in listb:
+    for elem in my_second_list:
         if elem not in newlist:
             newlist.append(elem)
     newlist.sort()
     return newlist
 
-def binary(myint):
-    """Returns the binary representation of myint as a string."""
-    return "{0:b}".format(myint)
+def binary(my_int):
+    """Returns the binary representation of my_int as a string."""
+    return "{0:b}".format(my_int)
 
 
-def binary_fixed_length(myint, length):
-    """ Returns a zero-padded (of length length) binary representation of myint"""
-    return binary(myint).zfill(length)
+def binary_fixed_length(my_int, length):
+    """ Returns a zero-padded (of length length) binary representation of my_int"""
+    return binary(my_int).zfill(length)
 
-def remove(lista, element):
-    """ Removes all instances of element from lista"""
+def remove(my_list, element):
+    """ Removes all instances of element from my_list"""
     try:
-        index = lista.index(element)
-        lista.pop(index)
-        remove(lista, element)
+        index = my_list.index(element)
+        my_list.pop(index)
+        remove(my_list, element)
     except ValueError:
         pass
 
@@ -62,16 +62,16 @@ class Truth(object):
             raise Exception(
                 "No. Just no. You have to pass in a function representation of valid length!")
 
-        self.myrows = []
+        self.my_rows = []
 
         for k in range(self.num):
-            self.myrows.append(list(
+            self.my_rows.append(list(
                 [int(i)for i in binary_fixed_length(k, int(math.log(self.num, 2)))]))
 
     def function_format(self, row):  #returns -1 upon failure or else the correct 0 or 1 value.
         """Plug in a row to get the corresponding value of the function"""
         try:
-            i = self.myrows.index(row)
+            i = self.my_rows.index(row)
             return self.table[i]
         except ValueError:
             return -1

@@ -4,14 +4,14 @@ This is my boilerplate code.
 import math
 
 
-def binary(myint):
-    """Returns the binary representation of myint as a string."""
-    return "{0:b}".format(myint)
+def binary(my_int):
+    """Returns the binary representation of my_int as a string."""
+    return "{0:b}".format(my_int)
 
 
-def binary_fixed_length(myint, length):
-    """ Returns a zero-padded (of length length) binary representation of myint"""
-    return binary(myint).zfill(length)
+def binary_fixed_length(my_int, length):
+    """ Returns a zero-padded (of length length) binary representation of my_int"""
+    return binary(my_int).zfill(length)
 
 
 class Truth(object):
@@ -25,16 +25,16 @@ class Truth(object):
             raise Exception(
             	   "No. Just no. You have to pass in a function representation of valid length!")
 
-        self.myrows = []
+        self.my_rows = []
 
         for k in range(self.num):
-            self.myrows.append(list(
+            self.my_rows.append(list(
             	   [int(i)for i in binary_fixed_length(k, int(math.log(self.num, 2)))]))
 
     def function_format(self, row):  #returns -1 upon failure or else the correct 0 or 1 value.
         """Plug in a row to get the corresponding value of the function"""
         try:
-            i = self.myrows.index(row)
+            i = self.my_rows.index(row)
             return self.table[i]
         except ValueError:
             return -1
