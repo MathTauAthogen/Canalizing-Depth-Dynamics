@@ -9,9 +9,9 @@ def random_function(degree):
         function[i] = random.randint(0, 1)
     return function
 
-def graph_data(degree, points):
-    """Generates histograms describing a large number of dynamical systems"""
-    import matplotlib.pyplot as plt
+def get_data(degree, points):
+    """Generates data sets describing random systems of degree n"""
+    result = []
     num_attractors = []
     attractor_sizes = []
     bassinet_sizes = []
@@ -24,6 +24,18 @@ def graph_data(degree, points):
         for j in range(num_attractors[i]):
             attractor_sizes.append(attractor_set[j][0])
             bassinet_sizes.append(attractor_set[j][1])
+    result.append(num_attractors)
+    result.append(attractor_sizes)
+    result.append(bassinet_sizes)
+    return result
+
+def graph_data(degree, points):
+    """Generates histograms describing a large number of dynamical systems"""
+    import matplotlib.pyplot as plt
+    data = get_data(degree, points)
+    num_attractors = data[0]
+    attractor_sizes = data[1]
+    bassinet_sizes = data[2]
     average_number_of_attractors = sum(num_attractors) / (1.0 * points)
     average_attractor_size = sum(attractor_sizes) / (1.0 * points)
     average_bassinet_size = sum(bassinet_sizes) / (1.0 * points)
@@ -46,6 +58,43 @@ def graph_data(degree, points):
     plt.hist(bassinet_sizes, bar_range, ec='black')
     plt.show()
 
+def graph_growth(degree, points):
+    """Graphs the changes in the mean values as the number of variables increases"""
+    import matplotlib.pyplot as plt
+    attractor_averages = []
+    attractor_size_averages = []
+    bassinet_size_averages = []
+    x_axis = []
+    for i in range(1, degree + 1):
+        for _ in range(10):
+            x_axis.append(i)
+    for i in range(1, degree + 1):
+        for _ in range(10):
+            data = get_data(i, points)
+            average_number_of_attractors = sum(data[0]) / (1.0 * points)
+            attractor_averages.append(average_number_of_attractors)
+            average_attractor_size = sum(data[1]) / (1.0 * points)
+            attractor_size_averages.append(average_attractor_size)
+            average_bassinet_size = sum(data[2]) / (1.0 * points)
+            bassinet_size_averages.append(average_bassinet_size)
+    plt.subplot(3, 1, 1)
+    plt.title("Average number of attractors")
+    plt.xlabel("degree")
+    plt.ylabel("Average number of attractors")
+    plt.plot(x_axis, attractor_averages, "ro")
+    plt.subplot(3, 1, 2)
+    plt.title("Average attractor size")
+    plt.xlabel("degree")
+    plt.ylabel("Average attractor size")
+    plt.plot(x_axis, attractor_size_averages, "ro")
+    plt.subplot(3, 1, 3)
+    plt.title("Average bassinet size")
+    plt.xlabel("degree")
+    plt.ylabel("Average bassinet size")
+    plt.plot(x_axis, bassinet_size_averages, "ro")
+    plt.show()
 
-graph_data(3, 1000)
-#1.32
+
+
+graph_data(3, 10000)
+graph_growth(5, 100)
