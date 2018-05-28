@@ -57,6 +57,28 @@ def is_uniform(my_list):
     except IndexError:
         return False #Needed specifically for this program to default here
 
+def random_int_with(length, conditions):
+    """Generate a random binary string with length length and that fits the condtions.
+    Input format notes:
+    conditions is an array of length length composed of 0, 1, and -1, where if the
+    value at some index is not -1, the value of the output at that index has to be the given value.
+    Output format notes:
+    Outputs a list representing a binary string."""
+    #Please try to make this better.
+    temp = [0] * length
+    while is_uniform(temp):
+        temp = conditions[:]
+        for i, val in enumerate(temp):
+            if val == -1:
+                temp[i] = random.randint(0, 1)
+    return temp
+
+def merge_at(initial, offset_list, at_list):
+    """Writes the elements of offset_list into inital at the locations in at_list."""
+    for i, val in enumerate(offset_list):
+        index = at_list[i]
+        initial[index] = val
+
 def overwrite_at(my_list, index, seq):
     """Overwrites elements my_list starting from index using seq as a template"""
     for i, val in enumerate(seq):
@@ -69,48 +91,25 @@ def random_noncanalysing_func(num_vars):
     Output format notes:
     It outputs a class with the format we agreed upon.
     """
-    table = [-1] * (2 ** num_vars)
-    first_vals_zero = get_first_vals_list(num_vars, 0)
-    first_vals_one = get_first_vals_list(num_vars, 1)
-    counter = 2 ** num_vars
-    place = 0
-    for i in range(num_vars):
-        counter = int(counter / 2)
-        tempo = [table[a] for a in first_vals_zero[i]]
-        temp = []
-        for j in tempo:
-            if j != -1:
-                temp.append(i)
-        if is_uniform(temp):
-            if counter != 1:
-                overwrite_at(
-                    table, place, near_rand_string(counter, [[0] * counter, [1] * counter]))
-                place += counter
-            else:
-                overwrite_at(table, place, [bp.binary_not(temp[0])])
-                place += counter
-        else:
-            overwrite_at(table, place, rand_string(counter))
-            place += counter
-    first_ones = [table[i] for i in first_vals_one[0]][:-1]
-    if is_uniform(first_ones):
-        table[-1] = 1 if first_ones[0] == 0 else 0
-    else:
-        table[-1] = random.randint(0, 1)
-    #Fix up stuff here
-    already_changed = []
     ready = False
     while not ready:
+        table = [-1] * (2 ** num_vars)
+        first_vals_zero = get_first_vals_list(num_vars, 0)
+        first_vals_one = get_first_vals_list(num_vars, 1)
+        i = 0
+        temp = [table[val] for _, val in enumerate(first_vals_zero[i])]
+        new_temp = random_int_with(2 ** (num_vars - 1), temp)
+        merge_at(table, new_temp, first_vals_zero[i])
+        table = random_int_with(2 ** num_vars, table)
+        #Fix up stuff here
         ready = True
         for i in range(num_vars):
-            counter = int(counter / 2)
+            temp = [table[a] for a in first_vals_zero[i]]
+            if is_uniform(temp):
+                ready = False
+        for i in range(num_vars):
             temp = [table[a] for a in first_vals_one[i]]
             if is_uniform(temp):
                 ready = False
-                to_sort = first_vals_one[i]
-                to_sort.sort()
-                for j in already_changed:
-                    bp.remove(to_sort, j)
-                table[to_sort[-1]] = bp.binary_not(table[to_sort[-1]])
-    #End in-progress section
+        #End in-progress section
     return bp.Truth(table)
