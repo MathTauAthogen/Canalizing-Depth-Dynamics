@@ -3,7 +3,7 @@
 #Import statements
 import math
 import random
-import boilerplate as bp
+import discrete_dynamical_system as dds
 
 #Boilerplates
 
@@ -13,7 +13,7 @@ def rand_string(length):
     Outputs a list representing a binary string.
     """
     k = random.randint(0, 2 ** length - 1)
-    return map(int, list(bp.binary_fixed_length(k, length)))
+    return map(int, list(dds.binary_fixed_length(k, length)))
 
 def near_rand_string(length, exceptions):
     """Generates a random binary string of length length that is not any of the exceptions.
@@ -36,7 +36,7 @@ def get_first_vals_list(num, val):
     my_rows = []
     for k in range(num):
         my_rows.append(list(
-            [int(i)for i in bp.binary_fixed_length(k, int(math.log(num, 2)))]))
+            [int(i)for i in dds.binary_fixed_length(k, int(math.log(num, 2)))]))
     outerlist = []
     for i in range(int(math.log(num, 2))):
         innerlist = []
@@ -112,4 +112,4 @@ def random_noncanalysing_func(num_vars):
             if is_uniform(temp):
                 ready = False
         #End in-progress section
-    return bp.Truth(table)
+    return dds.Truth(table)

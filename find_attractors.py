@@ -1,9 +1,9 @@
 """
-This is my code for sub-problem 1.
+Finding attractors and bassinets for a discrete dynamical system
 """
 
 import math
-import boilerplate as bp
+import discrete_dynamical_system as dds
 
 def mergelists(my_list, my_second_list):
     """Merge two lists"""
@@ -64,15 +64,15 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
                 + "size of functions for the number of variables!")
     functions_formatted = []
     for i in functions:
-        functions_formatted.append(bp.Truth(i))
+        functions_formatted.append(dds.Truth(i))
     attractors_and_bassinets = [[], []]
     for i in range(len(functions[0])):
         # i = list([int(j) for j in binary_fixed_length(i, int(math.log(len(functions[0]), 2)))])
-        i = [int(j) for j in bp.binary_fixed_length(i, int(math.log(len(functions[0]), 2)))]
+        i = [int(j) for j in dds.binary_fixed_length(i, int(math.log(len(functions[0]), 2)))]
         if scour(i, attractors_and_bassinets, 3):
             continue
         else:
-            dynamic = bp.Dynamical(i[:], functions_formatted)
+            dynamic = dds.Dynamical(i[:], functions_formatted)
             oldstates = [i[:]]
             dynamic.iterate()
             while not (dynamic.current in oldstates or scour(
@@ -97,7 +97,7 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
                     attractors_and_bassinets[1][index], new_bassinet)
     for i in range(len(attractors_and_bassinets[0])):
         for j in attractors_and_bassinets[0][i]:
-            bp.remove(attractors_and_bassinets[1][i], j)
+            dds.remove(attractors_and_bassinets[1][i], j)
     tuples = []
     for i in range(len(attractors_and_bassinets[0])):
         tuples.append([len(attractors_and_bassinets[0][i]), len(attractors_and_bassinets[1][i])])

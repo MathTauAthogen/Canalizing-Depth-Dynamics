@@ -1,7 +1,7 @@
 """This is for graphing a bunch of random noncanalysing functions."""
 import random_noncanalysing as rnc
 import matplotlib.pyplot as plt
-import boilerplate as bp
+import discrete_dynamical_system as dds
 
 def intersect(list_1, list_2):
 	totallist = []
@@ -33,7 +33,7 @@ def main(num, amount):
     plt.show()
     return over
 
-totalover = [bp.binary_fixed_length(k, 8) for k in range(2 ** 8)]
+totalover = [dds.binary_fixed_length(k, 8) for k in range(2 ** 8)]
 for i in range(5):
 	over = main(136 * 10, 3)
 	totalover = intersect(totalover, over)
