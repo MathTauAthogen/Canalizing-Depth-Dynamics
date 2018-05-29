@@ -62,8 +62,8 @@ def binary_list_to_decimal(list):
     """Converts list(a list representing a binary string) to a decimal int"""
     return int(''.join(list), 2)
 
-def backtrack(current_pos, backtrack_array):
-    """Backtrack from a point and return all points hit"""
+def backtrack(current_pos, backtrack_array, loop_points):
+    """Backtrack from a point and return if there is an attractor and the points hit."""
     pass
 
 def get_back_array(states):
@@ -96,27 +96,45 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     initial_conditions = all_numbers_but(referred_list, len(functions))
     back_array = get_back_array(state_function)
     used = []
+    #Loops with branches
     for i in initial_conditions:
         if i in used:
             continue
         old_states = []
         current_position = i
         last_state = current_position
-        while current_position not in old_states:
+        attractor = []
+        while not attractor:
             old_states.append(current_position)
-            for i in back_array[current_position]:
-                if i != last_state:
-                    old_states = list(set(old_states + backtrack(i, back_array)))
+            for j in back_array[current_position]:
+                if j != last_state:
+                    back_bool, back_bassinet = backtrack(j, back_array, [])
+                    if back_bool:#j is part of the attractor
+                        attractor = [j]
+                        move = state_function[j]
+                        while move != j:
+                            attractor.append(move)
+                            move = state_function[move]
+                    old_states = list(set(old_states + back_bassinet))
             last_state = current_position
-            current_position = state_function[current_position]
-        attractor = [current_position]
-        current_position = state_function[current_position]
-        while current_position not in attractor:
-            attractor.append(current_position)
             current_position = state_function[current_position]
         bassinet = list(set(old_states) - set(attractor))
         attractors_and_bassinets[0].append(attractor)
         attractors_and_bassinets[1].append(bassinet)
+        used = list(set(used + old_states))
+    #Loops without branches
+    in_loops = all_numbers_but(used, len(functions))
+    used_2 = []
+    for i in in_loops:
+        if i not in used_2:
+            temp = [i]
+            moves = state_function[i]
+            while moves != i:
+                temp.append(moves)
+                moves = state_function[moves]
+            attractors_and_bassinets[0].append(temp)
+            attractors_and_bassinets[1].append([])
+            used_2 = list(set(used_2 + temp))
     #End in-progress code
     tuples = []
     for i in range(len(attractors_and_bassinets[0])):
