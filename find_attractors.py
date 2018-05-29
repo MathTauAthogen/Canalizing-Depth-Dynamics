@@ -68,38 +68,9 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     for i in functions:
         functions_formatted.append(dds.Truth(i))
     attractors_and_bassinets = [[], []]
-    for i in range(len(functions[0])):
-        # i = list([int(j) for j in binary_fixed_length(i, int(math.log(len(functions[0]), 2)))])
-        i = [int(j) for j in dds.binary_fixed_length(i, int(math.log(len(functions[0]), 2)))]
-        if scour(i, attractors_and_bassinets, 3):
-            continue
-        else:
-            dynamic = dds.Dynamical(i[:], functions_formatted)
-            oldstates = [i[:]]
-            dynamic.iterate()
-            while not (dynamic.current in oldstates or scour(
-                    dynamic.current, attractors_and_bassinets, 3)):
-                oldstates.append(dynamic.current)
-                dynamic.iterate()
-            if dynamic.current in oldstates and not scour(
-                    dynamic.current, attractors_and_bassinets, 3):
-                new_attractor = oldstates[oldstates.index(dynamic.current):]
-                attractors_and_bassinets[0].append(new_attractor)
-                new_bassinet = oldstates
-                attractors_and_bassinets[1].append(new_bassinet)
-            elif scour(dynamic.current, attractors_and_bassinets[0], 2):
-                new_bassinet = oldstates
-                index = scan(dynamic.current, attractors_and_bassinets[0], 2)
-                attractors_and_bassinets[1][index] = mergelists(
-                    attractors_and_bassinets[1][index], new_bassinet)
-            else:
-                new_bassinet = oldstates
-                index = scan(dynamic.current, attractors_and_bassinets[1], 2)
-                attractors_and_bassinets[1][index] = mergelists(
-                    attractors_and_bassinets[1][index], new_bassinet)
-    for i in range(len(attractors_and_bassinets[0])):
-        for j in attractors_and_bassinets[0][i]:
-            dds.remove(attractors_and_bassinets[1][i], j)
+    #Begin in-progress code
+    
+    #End in-progress code
     tuples = []
     for i in range(len(attractors_and_bassinets[0])):
         tuples.append([len(attractors_and_bassinets[0][i]), len(attractors_and_bassinets[1][i])])

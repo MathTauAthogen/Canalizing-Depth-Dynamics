@@ -1,5 +1,6 @@
 import unittest
 import find_attractors as fa
+
 class TestAttractors(unittest.TestCase):
     def setUp(self):
         pass

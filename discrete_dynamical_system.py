@@ -69,16 +69,16 @@ class Truth(object):
 class Dynamical(object):
     """The class that stores the discrete dynamical system"""
     def __init__(self, initial, functions):
-        self.initial = initial
         self.functions = functions
         self.current = initial
+        temp = numpy.ndarray(functions)
+        temp = temp.T
+        self.states = [int(''.join(val), 2) for _, val in enumerate(temp)]
+
     def iterate(self):
         """ Increases the time by 1"""
-        now = self.current
-        temp = [-1] * len(self.functions)
-        for i in range(len(self.functions)):
-            temp[i] = self.functions[i].function_format(now)
-        self.current = temp[:]
+        self.current = self.states[self.current]
+        
     def placeholder(self):
         """ Not enough public methods otherwise"""
         pass
