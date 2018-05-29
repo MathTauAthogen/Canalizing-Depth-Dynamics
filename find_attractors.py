@@ -49,6 +49,30 @@ def scour(thing, array, depth):
         except ValueError:
             return False
 
+def all_numbers_but(exceptions, length):
+    """Generates a list of all ints besides exceptions with length <= length in binary."""
+    k = range(2 ** length)
+    temp = []
+    for i in k:
+        if i not in exceptions:
+            temp.append(i)
+    return temp
+
+def binary_list_to_decimal(list):
+    """Converts list(a list representing a binary string) to a decimal int"""
+    return int(''.join(list), 2)
+
+def backtrack(current_pos, backtrack_array):
+    """Backtrack from a point and return all points hit"""
+    pass
+
+def get_back_array(states):
+    """Given a state-function, find the array of arrays that point to each value"""
+    back = [[]] * len(states)
+    for i, val in enumerate(states):
+        back[val].append(i)
+    return back
+
 def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     """Gets the attractors and bassinets of the given functions"""
     for _, val in enumerate(functions):
@@ -64,12 +88,35 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
             raise Exception(
                 "No. Just no. There needs to be the right "
                 + "size of functions for the number of variables!")
-    functions_formatted = []
-    for i in functions:
-        functions_formatted.append(dds.Truth(i))
     attractors_and_bassinets = [[], []]
     #Begin in-progress code
-    
+    dynamical = dds.Dynamical([0] * len(functions), functions)#Only to get the states function.
+    state_function = dynamical.states
+    referred_list = list(set(state_function))#Everything that is not only an IC
+    initial_conditions = all_numbers_but(referred_list, len(functions))
+    back_array = get_back_array(state_function)
+    used = []
+    for i in initial_conditions:
+        if i in used:
+            continue
+        old_states = []
+        current_position = i
+        last_state = current_position
+        while current_position not in old_states:
+            old_states.append(current_position)
+            for i in back_array[current_position]:
+                if i != last_state:
+                    old_states = list(set(old_states + backtrack(i, back_array)))
+            last_state = current_position
+            current_position = state_function[current_position]
+        attractor = [current_position]
+        current_position = state_function[current_position]
+        while current_position not in attractor:
+            attractor.append(current_position)
+            current_position = state_function[current_position]
+        bassinet = list(set(old_states) - set(attractor))
+        attractors_and_bassinets[0].append(attractor)
+        attractors_and_bassinets[1].append(bassinet)
     #End in-progress code
     tuples = []
     for i in range(len(attractors_and_bassinets[0])):
