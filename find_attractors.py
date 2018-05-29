@@ -24,6 +24,7 @@ def scan(thing, array, depth):
         for i in array:
             if scan(thing, i, depth - 1) != -1:
                 is_good = counter
+                break
             counter += 1
         return is_good
     else:
@@ -39,6 +40,7 @@ def scour(thing, array, depth):
         for i in array:
             if scour(thing, i, depth - 1):
                 is_good = True
+                break
         return is_good
     else:
         try:
