@@ -71,14 +71,13 @@ class Dynamical(object):
     def __init__(self, initial, functions):
         self.functions = functions
         self.current = initial
-        temp = numpy.ndarray(functions)
-        temp = temp.T
-        self.states = [int(''.join(val), 2) for _, val in enumerate(temp)]
+        temp = map(list, zip(*functions))
+        self.states = [int(''.join(map(str, val)), 2) for _, val in enumerate(temp)]
 
     def iterate(self):
         """ Increases the time by 1"""
         self.current = self.states[self.current]
-        
+
     def placeholder(self):
         """ Not enough public methods otherwise"""
         pass
