@@ -64,7 +64,7 @@ def binary_list_to_decimal(list):
 
 def backtrack(current_pos, backtrack_array, loop_points):
     """Backtrack from a point and return if there is an attractor and the points hit."""
-    sum_total = []
+    sum_total = [current_pos]
     attract = False
     if current_pos in loop_points:
         return [True, [current_pos]]
@@ -149,8 +149,8 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     #End in-progress code
     tuples = []
     for i in range(len(attractors_and_bassinets[0])):
-        tuples.append([attractors_and_bassinets[0][i], attractors_and_bassinets[1][i]])
-        #tuples.append([len(attractors_and_bassinets[0][i]), len(attractors_and_bassinets[1][i])])
+        #tuples.append([attractors_and_bassinets[0][i], attractors_and_bassinets[1][i]])
+        tuples.append([len(attractors_and_bassinets[0][i]), len(attractors_and_bassinets[1][i])])
     return tuples
 
 
