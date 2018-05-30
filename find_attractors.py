@@ -4,8 +4,6 @@ Finding attractors and bassinets for a discrete dynamical system
 
 import math
 import discrete_dynamical_system as dds
-import sys
-sys.setrecursionlimit(10000)
 
 def mergelists(my_list, my_second_list):
     """Merge two lists"""
@@ -68,12 +66,12 @@ def backtrack(current_pos, backtrack_array, loop_points):
     """Backtrack from a point and return if there is an attractor and the points hit."""
     sum_total = []
     attract = False
+    if current_pos in loop_points:
+        return [True, [current_pos]]
     for i in backtrack_array[current_pos]:
         back_bool, a = backtrack(i, backtrack_array, list(set(loop_points + [i])))
         sum_total = list(set(sum_total + a))
         if back_bool:
-            attract = True
-        if not set(a).isdisjoint(loop_points):
             attract = True
     return [attract, sum_total]
 
@@ -119,7 +117,7 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
             old_states.append(current_position)
             for j in back_array[current_position]:
                 if j != last_state:
-                    back_bool, back_bassinet = backtrack(j, back_array, [j])
+                    back_bool, back_bassinet = backtrack(j, back_array, [current_position])
                     if back_bool:#j is part of the attractor
                         attractor = [j]
                         move = state_function[j]
