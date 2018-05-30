@@ -64,16 +64,15 @@ def binary_list_to_decimal(list):
 
 def backtrack(current_pos, backtrack_array, loop_points):
     """Backtrack from a point and return if there is an attractor and the points hit."""
-    sum_total = [current_pos]
     attract = False
-    if current_pos in loop_points:
-        return [True, [current_pos]]
+    if loop_points[current_pos] == 1:
+        return True
+    loop_points[current_pos] = 1
     for i in backtrack_array[current_pos]:
-        back_bool, a = backtrack(i, backtrack_array, list(set(loop_points + [current_pos])))
-        sum_total = list(set(sum_total + a))
+        back_bool = backtrack(i, backtrack_array, loop_points)
         if back_bool:
             attract = True
-    return [attract, sum_total]
+    return attract
 
 def get_back_array(states):
     """Given a state-function, find the array of arrays that point to each value"""
@@ -119,8 +118,13 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
             old_states.append(current_position)
             for j in back_array[current_position]:
                 if j != last_state:
-                    back_bool, back_bassinet = backtrack(j, back_array, [current_position])
-                    if back_bool:#j is part of the attractor
+                    is_used = [0] * (2**len(functions))
+                    back_bool = backtrack(j, back_array, is_used)
+                    back_bassinet = []
+                    for i, val in enumerate(is_used):
+                        if val == 1:
+                            back_bassinet.append(i)
+                    if back_bool:
                         attractor = [j]
                         move = state_function[j]
                         while move != j:

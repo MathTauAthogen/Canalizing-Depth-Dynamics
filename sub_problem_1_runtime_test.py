@@ -10,8 +10,10 @@ def random_function(degree):
         function[i] = random.randint(0, 1)
     return function
 
-a = [random_function(10) for i in range(10)]
 start = time.time()
-sp1.get_attractors_and_bassinets(a)
+n = 10
+for i in range(100):
+	f  = [random_function(n) for j in range(n)]
+	sp1.get_attractors_and_bassinets(f)
 end = time.time()
 print end-start
