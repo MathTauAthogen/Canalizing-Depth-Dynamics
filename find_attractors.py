@@ -69,7 +69,7 @@ def backtrack(current_pos, backtrack_array, loop_points):
     if current_pos in loop_points:
         return [True, [current_pos]]
     for i in backtrack_array[current_pos]:
-        back_bool, a = backtrack(i, backtrack_array, list(set(loop_points + [i])))
+        back_bool, a = backtrack(i, backtrack_array, list(set(loop_points + [current_pos])))
         sum_total = list(set(sum_total + a))
         if back_bool:
             attract = True
@@ -77,7 +77,9 @@ def backtrack(current_pos, backtrack_array, loop_points):
 
 def get_back_array(states):
     """Given a state-function, find the array of arrays that point to each value"""
-    back = [[]] * len(states)
+    back = []
+    for _, _ in enumerate(states):
+        back.append([])
     for i, val in enumerate(states):
         back[val].append(i)#Appends to all arrays. Why?
     return back
@@ -147,7 +149,8 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     #End in-progress code
     tuples = []
     for i in range(len(attractors_and_bassinets[0])):
-        tuples.append([len(attractors_and_bassinets[0][i]), len(attractors_and_bassinets[1][i])])
+        tuples.append([attractors_and_bassinets[0][i], attractors_and_bassinets[1][i]])
+        #tuples.append([len(attractors_and_bassinets[0][i]), len(attractors_and_bassinets[1][i])])
     return tuples
 
 

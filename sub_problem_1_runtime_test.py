@@ -10,7 +10,7 @@ def random_function(degree):
         function[i] = random.randint(0, 1)
     return function
 
-a = [random_function(3) for i in range(3)]
+a = [random_function(10) for i in range(10)]
 start = time.time()
 sp1.get_attractors_and_bassinets(a)
 end = time.time()
