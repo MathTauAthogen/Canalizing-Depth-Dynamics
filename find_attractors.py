@@ -79,7 +79,7 @@ def get_back_array(states):
     """Given a state-function, find the array of arrays that point to each value"""
     back = [[]] * len(states)
     for i, val in enumerate(states):
-        back[val].append(i)
+        back[val].append(i)#Appends to all arrays. Why?
     return back
 
 def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
@@ -103,7 +103,7 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     state_function = dynamical.states
     referred_list = list(set(state_function))#Everything that is not only an IC
     initial_conditions = all_numbers_but(referred_list, len(functions))
-    back_array = get_back_array(state_function)
+    back_array = get_back_array(state_function)#Doesn't work
     used = []
     #Loops with branches
     for i in initial_conditions:
