@@ -65,7 +65,7 @@ def binary_list_to_decimal(list):
 def backtrack(current_pos, backtrack_array, loop_points):
     """Backtrack from a point and return if there is an attractor and the points hit."""
     attract = False
-    if loop_points[current_pos] == 1:
+    if current_pos in loop_points:
         return True
     loop_points[current_pos] = 1
     for i in backtrack_array[current_pos]:
@@ -110,33 +110,21 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     for i in initial_conditions:
         if i in used:
             continue
-        old_states = []
-        current_position = i
-        last_state = current_position
-        attractor = []
-        while not attractor:
-            old_states.append(current_position)
-            for j in back_array[current_position]:
-                if j != last_state:
-                    is_used = [0] * (2**len(functions))
-                    back_bool = backtrack(j, back_array, is_used)
-                    back_bassinet = []
-                    for i, val in enumerate(is_used):
-                        if val == 1:
-                            back_bassinet.append(i)
-                    if back_bool:
-                        attractor = [j]
-                        move = state_function[j]
-                        while move != j:
-                            attractor.append(move)
-                            move = state_function[move]
-                    old_states = list(set(old_states + back_bassinet))
-            last_state = current_position
-            current_position = state_function[current_position]
-        bassinet = list(set(old_states) - set(attractor))
+        old_states = {}
+        move = i
+        counter = 0
+        while move not in old_states:
+            old_states[move] = counter
+            move = state_function[move]
+            counter += 1
+        attractor = [k for k, v in old_states.items() if v >= old_states[move]]
         attractors_and_bassinets[0].append(attractor)
+        old_states_2 = {}
+        for j in attractor:
+            backtrack(j, back_array, old_states_2)
+        bassinet = list(old_states_2.keys())
         attractors_and_bassinets[1].append(bassinet)
-        used = list(set(used + old_states))
+        used = list(set(used + bassinet))
     #Loops without branches
     in_loops = all_numbers_but(used, len(functions))
     used_2 = []
@@ -148,7 +136,7 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
                 temp.append(moves)
                 moves = state_function[moves]
             attractors_and_bassinets[0].append(temp)
-            attractors_and_bassinets[1].append([])
+            attractors_and_bassinets[1].append(temp)
             used_2 = list(set(used_2 + temp))
     #End in-progress code
     tuples = []
