@@ -5,50 +5,6 @@ Finding attractors and bassinets for a discrete dynamical system
 import math
 import discrete_dynamical_system as dds
 
-def mergelists(my_list, my_second_list):
-    """Merge two lists"""
-    newlist = []
-    for i in my_list:
-        newlist.append(i)
-    for elem in my_second_list:
-        if elem not in newlist:
-            newlist.append(elem)
-    newlist.sort()
-    return newlist
-
-def scan(thing, array, depth):
-    """Gets the index in array that contains thing at its depth-1"""
-    if depth > 1:
-        is_good = -1
-        counter = 0
-        for i in array:
-            if scan(thing, i, depth - 1) != -1:
-                is_good = counter
-                break
-            counter += 1
-        return is_good
-    else:
-        try:
-            return array.index(thing)
-        except ValueError:
-            return -1
-
-def scour(thing, array, depth):
-    """Checks if thing exists at a certain depth in array."""
-    if depth > 1:
-        is_good = False
-        for i in array:
-            if scour(thing, i, depth - 1):
-                is_good = True
-                break
-        return is_good
-    else:
-        try:
-            array.index(thing)
-            return True
-        except ValueError:
-            return False
-
 def all_numbers_but(exceptions, length):
     """Generates a list of all ints besides exceptions with length <= length in binary."""
     k = range(2 ** length)
@@ -104,7 +60,7 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     state_function = dynamical.states
     referred_list = list(set(state_function))#Everything that is not only an IC
     initial_conditions = all_numbers_but(referred_list, len(functions))
-    back_array = get_back_array(state_function)#Doesn't work
+    back_array = get_back_array(state_function)
     used = []
     #Loops with branches
     for i in initial_conditions:
