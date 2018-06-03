@@ -4,15 +4,12 @@ Finding attractors and bassinets for a discrete dynamical system
 
 import math
 import discrete_dynamical_system as dds
+import numpy as np
 
 def all_numbers_but(exceptions, length):
     """Generates a list of all ints besides exceptions with length <= length in binary."""
-    k = range(2 ** length)
-    temp = []
-    for i in k:
-        if i not in exceptions:
-            temp.append(i)
-    return temp
+    k = np.arange(2 ** length)
+    return np.delete(k, exceptions)
 
 def binary_list_to_decimal(list):
     """Converts list(a list representing a binary string) to a decimal int"""
@@ -20,15 +17,11 @@ def binary_list_to_decimal(list):
 
 def backtrack(current_pos, backtrack_array, loop_points):
     """Backtrack from a point and return if there is an attractor and the points hit."""
-    attract = False
-    if current_pos in loop_points:
-        return True
     loop_points[current_pos] = 1
     for i in backtrack_array[current_pos]:
-        back_bool = backtrack(i, backtrack_array, loop_points)
-        if back_bool:
-            attract = True
-    return attract
+        if loop_points[i] == 1:
+            continue
+        backtrack(i, backtrack_array, loop_points)
 
 def get_back_array(states):
     """Given a state-function, find the array of arrays that point to each value"""
@@ -36,7 +29,7 @@ def get_back_array(states):
     for _, _ in enumerate(states):
         back.append([])
     for i, val in enumerate(states):
-        back[val].append(i)#Appends to all arrays. Why?
+        back[val].append(i)
     return back
 
 def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
@@ -66,19 +59,21 @@ def get_attractors_and_bassinets(functions):#pylint: disable=too-many-branches
     for i in initial_conditions:
         if i in used:
             continue
-        old_states = {}
+        old_states = dict(zip(range(2 ** len(functions)), [0] * (2 ** len(functions))))
+        old_states_array = []
         move = i
-        counter = 0
-        while move not in old_states:
-            old_states[move] = counter
+        while old_states[move] == 0:
+            old_states[move] = 1
+            old_states_array.append(move)
             move = state_function[move]
-            counter += 1
-        attractor = [k for k, v in old_states.items() if v >= old_states[move]]
+        attractor = old_states_array[old_states_array.index(move):]
         attractors_and_bassinets[0].append(attractor)
-        old_states_2 = {}
+        old_states_2 = dict(zip(range(2 ** len(functions)), [0] * (2 ** len(functions))))
+        for j in attractor:
+            old_states_2[j] = 1
         for j in attractor:
             backtrack(j, back_array, old_states_2)
-        bassinet = list(old_states_2.keys())
+        bassinet = [k for k, v in old_states_2.items() if v == 1]
         attractors_and_bassinets[1].append(bassinet)
         used = list(set(used + bassinet))
     #Loops without branches
