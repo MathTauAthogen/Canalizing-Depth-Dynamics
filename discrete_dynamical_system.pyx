@@ -2,6 +2,7 @@
 This is my boilerplate code.
 """
 import math
+import numpy as np
 
 def binary_not(val):
     """Does the binary not operation on val."""
@@ -71,8 +72,11 @@ class Dynamical(object):
     def __init__(self, initial, functions):
         self.functions = functions
         self.current = initial
-        temp = map(list, zip(*functions))
-        self.states = [int(''.join(map(str, val)), 2) for _, val in enumerate(temp)]
+        #temp = map(list, zip(*functions))
+        temp = functions.T
+        power_vector = np.power(2, np.arange(temp.shape[1] - 1, -1, -1)).T
+        self.states = np.dot(temp, power_vector)[0,:].tolist()[0]
+        #print(self.states)
 
     def iterate(self):
         """ Increases the time by 1"""

@@ -3,7 +3,6 @@ import pyximport
 pyximport.install()
 import find_attractors as fa
 import random
-import numpy as np
 #from random_function import random_function
 
 def random_function(degree):
@@ -13,12 +12,10 @@ def random_function(degree):
         function[i] = random.randint(0, 1)
     return function
 
-cases = 100
-n = 10
-function_list = [np.matrix([random_function(n) for j in range(n)]) for j in range(cases)]
 start = time.time()
-for i in range(cases):
-	calculations = fa.FindAttractors(function_list[i])
-	calculations.get_attractors_and_bassinets()
+n = 10
+f  = [random_function(n) for j in range(n)]
+calculations = fa.FindAttractors(f)
+calculations.get_attractors_and_bassinets()
 end = time.time()
 print end-start

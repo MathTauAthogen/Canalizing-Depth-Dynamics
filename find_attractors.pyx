@@ -5,12 +5,27 @@ Finding attractors and bassinets for a discrete dynamical system
 import math
 import discrete_dynamical_system as dds
 import pyximport
-pyximport.install(setup_args={"script_args":["--compiler=mingw32"]}, reload_support=True)
+import sys
+pyximport.install()
 
-def all_numbers_but(exceptions, length):
+cdef backtrack(int current_pos, backtrack_array, dict loop_points):
+    """Backtrack from a point and return if there is an attractor and the points hit."""
+    cdef bint attract = False
+    cdef bint back_bool = False
+    if current_pos in loop_points:
+        return True
+    loop_points[current_pos] = 1
+    for i in backtrack_array[current_pos]:
+        back_bool = backtrack(i, backtrack_array, loop_points)
+        if back_bool:
+            attract = True
+    return attract
+
+cdef all_numbers_but(exceptions, int length):
     """Generates a list of all ints besides exceptions with length <= length in binary."""
     k = range(2 ** length)
     temp = []
+    cdef int i
     for i in k:
         if i not in exceptions:
             temp.append(i)
@@ -23,7 +38,7 @@ def binary_list_to_decimal(list):
 def get_back_array(states):
     """Given a state-function, find the array of arrays that point to each value"""
     back = []
-    for _, _ in enumerate(states):
+    for a, b in enumerate(states):
         back.append([])
     for i, val in enumerate(states):
         back[val].append(i)#Appends to all arrays. Why?
@@ -40,37 +55,37 @@ class FindAttractors(object):
     @classmethod
     def backtrack(cls, current_pos, backtrack_array, loop_points):
         """Backtrack from a point and return if there is an attractor and the points hit."""
-        cdef bool attract = False
+        cdef bint attract = False
+        cdef bint back_bool = False
         if current_pos in loop_points:
             return True
         loop_points[current_pos] = 1
         for i in backtrack_array[current_pos]:
-            cdef bool back_bool = cls.backtrack(i, backtrack_array, loop_points)
+            back_bool = cls.backtrack(i, backtrack_array, loop_points)
             if back_bool:
                 attract = True
         return attract
 
     def get_attractors_and_bassinets(self):#pylint: disable=too-many-branches
         """Gets the attractors and bassinets of the given functions"""
-        print("BP")
-        for _, val in enumerate(self.functions):
-            if math.log(len(val), 2).is_integer():
-                pass
-            else:
-                raise Exception(
-                    "No. Just no. You have to pass in function representations of valid lengths!")
-        for _, val in enumerate(self.functions):
-            if len(self.functions) == math.log(len(val), 2):
-                pass
-            else:
-                raise Exception(
-                    "No. Just no. There needs to be the right "
-                    + "size of functions for the number of variables!")
+        # for _, val in enumerate(self.functions):
+        #     if math.log(len(val), 2).is_integer():
+        #         pass
+        #     else:
+        #         raise Exception(
+        #             "No. Just no. You have to pass in function representations of valid lengths!")
+        # for _, val in enumerate(self.functions):
+        #     if len(self.functions) == math.log(len(val), 2):
+        #         pass
+        #     else:
+        #         raise Exception(
+        #             "No. Just no. There needs to be the right "
+        #             + "size of functions for the number of variables!")
         #Begin in-progress code
         dynamical = dds.Dynamical([0] * len(self.functions), self.functions)#Only to get the states function.
+        #return
         self.state_function = dynamical.states
         self.referred_list = list(set(self.state_function))#Everything that is not only an IC
-        #Loops with branches
         self.handle_loops_with_branches()
         #Loops without branches
         in_loops = all_numbers_but(self.used, len(self.functions))
@@ -90,7 +105,7 @@ class FindAttractors(object):
         for i in range(len(self.attractors_and_bassinets[0])):
             #tuples.append([attractors_and_bassinets[0][i], attractors_and_bassinets[1][i]])
             tuples.append([len(self.attractors_and_bassinets[0][i]), len(self.attractors_and_bassinets[1][i])])
-        return 
+        return tuples
 
     def handle_loops_with_branches(self):
         initial_conditions = all_numbers_but(self.referred_list, len(self.functions))
@@ -109,7 +124,7 @@ class FindAttractors(object):
             self.attractors_and_bassinets[0].append(attractor)
             old_states_2 = {}
             for j in attractor:
-                self.backtrack(j, back_array, old_states_2)
+                backtrack(j, back_array, old_states_2)
             bassinet = list(old_states_2.keys())
             self.attractors_and_bassinets[1].append(bassinet)
             self.used = list(set(self.used + bassinet))
