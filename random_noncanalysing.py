@@ -3,6 +3,7 @@
 #Import statements
 import math
 import random
+import pyximport; pyximport.install()
 import discrete_dynamical_system as dds
 
 #Boilerplates

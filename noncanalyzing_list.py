@@ -3,6 +3,7 @@ Produces a list of all non-canalyzing functions in num variables
 """
 
 import time
+import pyximport; pyximport.install()
 import discrete_dynamical_system as dds
 
 

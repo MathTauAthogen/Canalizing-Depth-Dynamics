@@ -1,5 +1,6 @@
 """This is code to generate random dynamical systems and observe their properties"""
 import random
+import pyximport; pyximport.install()
 import find_attractors as fa
 
 def random_function(degree):
