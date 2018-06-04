@@ -9,6 +9,7 @@ def dfs(vertex, old_v, graph, visited, basin_size):
     basin_size[0] = basin_size[0] + 1
     old_count = 0
     repeat = -1
+    visited_now = [0] * len(graph)
     for i in graph[vertex]:
         if i == vertex:
             repeat = i
@@ -17,11 +18,14 @@ def dfs(vertex, old_v, graph, visited, basin_size):
             if old_count == 2:
                 repeat = old_v
         else:
-            temp_repeat = dfs(i, vertex, graph, visited, basin_size)
-            if temp_repeat != -1:
-                repeat = temp_repeat
-            if visited[i] == 1:
-                repeat = i
+            if visited_now[i] == 0:
+                if visited[i] == 1:
+                    repeat = i
+                else:
+                    temp_repeat = dfs(i, vertex, graph, visited, basin_size)
+                    if temp_repeat != -1:
+                        repeat = temp_repeat
+                visited_now[i] = 1
     return repeat
 
 def to_state_function(functions):

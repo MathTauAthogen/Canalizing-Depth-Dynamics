@@ -114,3 +114,6 @@ def random_noncanalysing_func(num_vars):
                 ready = False
         #End in-progress section
     return dds.Truth(table)
+
+if __name__ == "__main__":
+    random_noncanalysing_func(3)
