@@ -1,14 +1,14 @@
 """Find attractors using the other new method discussed at the meeting on 6/3/18"""
 import numpy as np
-#import pyximport
-#pyximport.install()
+import pyximport
+pyximport.install()
 
-def dfs(vertex, old_v, graph, visited, basin_size):
+cdef dfs(int vertex, int old_v, graph, visited, basin_size):
     """Standard DFS with a twist that you can't go back in the direction you were just going in"""
     visited[vertex] = 1
     basin_size[0] = basin_size[0] + 1
-    old_count = 0
-    repeat = -1
+    cdef int old_count = 0
+    cdef int repeat = -1
     visited_now = [0] * len(graph)
     for i in graph[vertex]:
         if i == vertex:
@@ -34,10 +34,10 @@ def to_state_function(functions):
     power_vector = np.power(2, np.arange(temp.shape[1] - 1, -1, -1)).T
     return np.dot(temp, power_vector)[0, :].tolist()[0]
 
-def to_graph(state_function):
+cdef to_graph(state_function):
     """Converts a state function to a graph"""
     graph = []
-    length = len(state_function)
+    cdef int length = len(state_function)
     for i in range(length):
         graph.append([])
     for i, val in enumerate(state_function):
@@ -65,7 +65,7 @@ def find_attractors_and_basins(functions):
         basin_size = [1]#Just so I don't have to deal with returning this value
         point_on_attractor = i
         for j in graph[i]:
-            if j != i:
+            if j != i and visited[j] == 0:
                 temp = dfs(j, i, graph, visited, basin_size)
                 if temp != -1:
                     point_on_attractor = temp

@@ -1,8 +1,7 @@
 import time
 import pyximport
 pyximport.install()
-import find_attractors_dfs as fa
-import sub_problem_1_runtime_test_non_dfs
+import find_attractors as fa
 import random
 import numpy as np
 #from random_function import random_function
@@ -22,8 +21,8 @@ for j in range(num):
     function_list = [np.matrix(
         [random_function(n) for j in range(n)]) for j in range(cases)]#Move in or out
     for i in range(cases):
-    	#calculations = fa.FindAttractors(function_list[i])
-    	#calculations.get_attractors_and_bassinets()
-    	fa.find_attractors_and_basins(function_list[i])
+    	calculations = fa.FindAttractors(function_list[i])
+    	calculations.get_attractors_and_bassinets()
+    	#fa.find_attractors_and_basins(function_list[i])
     end = time.time()
 print (end-start)/num
