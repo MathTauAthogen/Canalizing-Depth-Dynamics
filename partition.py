@@ -1,4 +1,4 @@
-"""Program for generating random ordered partitions of a set"""
+"""Program for generating ordered partitions of a set"""
 import random
 
 def choose(elements, size):
