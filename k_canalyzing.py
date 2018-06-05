@@ -4,10 +4,10 @@ import partition
 import discrete_dynamical_system as dds
 import random_noncanalysing as rn
 
-def random_k_canalyzing(degree, depth):
+def random_k_canalyzing(num_vars, depth):
     """Method to generate a random k-canalyzing function"""
     initial = random.randint(0, 1)
-    variables = [i for i in range(degree)]
+    variables = [i for i in range(num_vars)]
     canalyzing = partition.random_subset(variables, depth)
     partitioned = partition.random_partition(canalyzing)
     desired = [random.randint(0, 1) for _ in range(depth)]
@@ -23,7 +23,7 @@ def random_k_canalyzing(degree, depth):
         alternate = [input_table[i] for i in variables]
         return core.function_format(alternate)
     result = []
-    for i in range(2 ** degree):
-        state = [int(j) for j in list(dds.binary_fixed_length(i, degree))]
+    for i in range(2 ** num_vars):
+        state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]
         result.append(evaluator(state))
     return dds.Truth(result)
