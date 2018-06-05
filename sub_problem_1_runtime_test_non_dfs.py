@@ -24,5 +24,5 @@ for j in range(num):
     	calculations = fa.FindAttractors(function_list[i])
     	calculations.get_attractors_and_bassinets()
     	#fa.find_attractors_and_basins(function_list[i])
-    end = time.time()
+end = time.time()
 print (end-start)/num

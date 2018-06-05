@@ -16,7 +16,7 @@ def random_function(degree):
 
 cases = 100
 n = 10
-num = 10
+num = 1
 start = time.time()
 for j in range(num):
     function_list = [np.matrix(
@@ -25,5 +25,5 @@ for j in range(num):
     	#calculations = fa.FindAttractors(function_list[i])
     	#calculations.get_attractors_and_bassinets()
     	fa.find_attractors_and_basins(function_list[i])
-    end = time.time()
+end = time.time()
 print (end-start)/num
