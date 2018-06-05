@@ -7,7 +7,7 @@ import random_noncanalysing as rn
 def random_k_canalyzing(num_vars, depth):
     """Method to generate a random k-canalyzing function"""
     initial = random.randint(0, 1)
-    variables = [i for i in range(num_vars)]
+    variables = range(num_vars)
     canalyzing = partition.random_subset(variables, depth)
     partitioned = partition.random_partition(canalyzing)
     desired = [random.randint(0, 1) for _ in range(depth)]
