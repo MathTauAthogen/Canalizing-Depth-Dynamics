@@ -6,8 +6,8 @@ def fubini(elements):
     """Returns the nth Fubini number (ordered Bell number)"""
     if elements == 0:
         return 1
-    else:
-        result = 0
+    
+    result = 0
     for i in range(1, elements + 1):
         result += sp.binom(elements, i) * fubini(elements - i)
     return result
