@@ -1,14 +1,6 @@
 """Program for generating ordered partitions of a set"""
 import random
-
-def choose(elements, size):
-    """Returns the number of subsets of a certain size in some number of elements"""
-    size = min(size, elements - size)
-    result = 1
-    for i in range(1, size + 1):
-        result *= elements - size + i
-        result /= i
-    return result
+import scipy.special as sp
 
 def fubini(elements):
     """Returns the nth Fubini number (ordered Bell number)"""
@@ -17,7 +9,7 @@ def fubini(elements):
     else:
         result = 0
     for i in range(1, elements + 1):
-        result += choose(elements, i) * fubini(elements - i)
+        result += sp.binom(elements, i) * fubini(elements - i)
     return result
 
 
@@ -43,7 +35,7 @@ def random_partition(variables):
     count = 0
     while counter < chooser:
         count += 1
-        counter += fubini(k - count) * choose(k, count)
+        counter += fubini(k - count) * sp.binom(k, count)
     subset = random_subset(variables, count)
     left = random_partition(variables)
     left.append(subset)
