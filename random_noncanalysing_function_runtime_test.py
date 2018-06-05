@@ -34,7 +34,7 @@ def main(num, amount):
 
 totalover = [bp.binary_fixed_length(k, 8) for k in range(2 ** 8)]
 for i in range(5):
-	over = main(136 * 1000, 3)
+	over = main(138 * 1000, 3)
 	totalover = intersect(totalover, over)
 print(totalover)
 print(len(totalover))

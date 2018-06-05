@@ -67,11 +67,11 @@ def random_int_with(length, conditions):
     Outputs a list representing a binary string."""
     #Please try to make this better.
     temp = [0] * length
-    while is_uniform(temp):
-        temp = conditions[:]
-        for i, val in enumerate(temp):
-            if val == -1:
-                temp[i] = random.randint(0, 1)
+    #while is_uniform(temp):
+    temp = conditions[:]
+    for i, val in enumerate(temp):
+        if val == -1:
+            temp[i] = random.randint(0, 1)
     return temp
 
 def merge_at(initial, offset_list, at_list):
@@ -97,10 +97,10 @@ def random_noncanalysing_func(num_vars):
         table = [-1] * (2 ** num_vars)
         first_vals_zero = get_first_vals_list(num_vars, 0)
         first_vals_one = get_first_vals_list(num_vars, 1)
-        i = 0
-        temp = [table[val] for _, val in enumerate(first_vals_zero[i])]
-        new_temp = random_int_with(2 ** (num_vars - 1), temp)
-        merge_at(table, new_temp, first_vals_zero[i])
+        # i = 0
+        # temp = [table[val] for _, val in enumerate(first_vals_zero[i])]
+        # new_temp = random_int_with(2 ** (num_vars - 1), temp)
+        # merge_at(table, new_temp, first_vals_zero[i])
         table = random_int_with(2 ** num_vars, table)
         #Fix up stuff here
         ready = True
@@ -112,8 +112,10 @@ def random_noncanalysing_func(num_vars):
             temp = [table[a] for a in first_vals_one[i]]
             if is_uniform(temp):
                 ready = False
+        if is_uniform(table):
+            ready = True
         #End in-progress section
     return dds.Truth(table)
 
 if __name__ == "__main__":
-    random_noncanalysing_func(3)
+    print(random_noncanalysing_func(3).return_truth_table())
