@@ -17,6 +17,8 @@ def partition_test(num_vars, num_points):
     data_list = data.values()
     plt.bar(range(len(data)), list(data.values()), align='center')
     plt.xticks(range(len(data)), list(data.keys()))
+    difference = len(data) - partition.fubini(num_vars)
+    print "Found number of functions - number of desired functions : " + str(difference)
     print sps.chisquare(data_list)
     plt.show()
 
