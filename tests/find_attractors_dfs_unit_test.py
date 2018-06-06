@@ -1,6 +1,9 @@
 import unittest
 import pyximport
 pyximport.install()
+
+import sys
+sys.path.insert(0, '../')
 import find_attractors_dfs as fa
 import numpy as np
 

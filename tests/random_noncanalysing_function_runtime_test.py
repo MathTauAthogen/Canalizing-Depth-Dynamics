@@ -1,4 +1,6 @@
 """This is for graphing a bunch of random noncanalysing functions."""
+import sys
+sys.path.insert(0, '../')
 import random_noncanalysing as rnc
 import matplotlib.pyplot as plt
 import pyximport

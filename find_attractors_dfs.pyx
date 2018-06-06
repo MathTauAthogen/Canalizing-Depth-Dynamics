@@ -51,7 +51,7 @@ def find_attractors_and_basins(functions):
     for i in range(len(state_function)):
         if visited[i] == 1:
             continue
-        the_vars = {"basin size":0, "attractor piece":-1}
+        the_vars = {"basin size" : 0, "attractor piece" : -1}
         dfs(i, -1, graph, visited, the_vars)
         attractor_length = 1
         point_on_attractor = the_vars["attractor piece"]
