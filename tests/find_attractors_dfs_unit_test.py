@@ -1,11 +1,11 @@
 import unittest
 import pyximport
 pyximport.install()
+import numpy as np
 
 import sys
 sys.path.insert(0, '../')
 import find_attractors_dfs as fa
-import numpy as np
 
 class TestAttractors(unittest.TestCase):
     def setUp(self):

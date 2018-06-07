@@ -1,12 +1,13 @@
 """This is for graphing a bunch of random noncanalysing functions."""
-import sys
-sys.path.insert(0, '../')
-import random_noncanalysing as rnc
 import matplotlib.pyplot as plt
 import pyximport
-pyximport.install()
-import discrete_dynamical_system as bp
 import time
+pyximport.install()
+
+import sys
+sys.path.insert(0, '../')
+import discrete_dynamical_system as bp
+import random_noncanalysing as rnc
 
 def intersect(list_1, list_2):
 	totallist = []

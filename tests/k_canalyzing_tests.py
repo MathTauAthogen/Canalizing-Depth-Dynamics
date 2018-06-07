@@ -1,6 +1,9 @@
 """Program to test validity of functions for randomly creating k-canalyzing functions"""
 import matplotlib.pyplot as plt
 import scipy.stats as sps
+
+import sys
+sys.path.insert(0, '../')
 import partition
 
 def partition_test(num_vars, num_points):
