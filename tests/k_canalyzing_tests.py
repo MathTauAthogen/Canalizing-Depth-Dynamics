@@ -2,7 +2,9 @@
 import matplotlib.pyplot as plt
 import scipy.stats as sps
 
+import pyximport
 import sys
+pyximport.install()
 sys.path.insert(0, '../')
 import partition
 import k_canalyzing_faulty as kc
@@ -46,4 +48,4 @@ def k_canalyzing_test(num_vars, depth, num_points):
     
 ## Test case ##
 #partition_test(5, 100)
-k_canalyzing_test(2, 2, 1000)
+k_canalyzing_test(2, 2, 10000)
