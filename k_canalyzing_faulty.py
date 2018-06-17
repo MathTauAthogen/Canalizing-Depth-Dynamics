@@ -76,7 +76,8 @@ def random_nested(num_vars, initial = None, core = None, partitioned = None):
     if initial == None:
         initial = random.randint(0, 1)
     if core == None:
-        core = random.randint(0, 1)
+        #core = random.randint(0, 1)
+        core = 1
     variables = range(num_vars)
     if(partitioned == None):
         partitioned = partition.random_partition(variables)
@@ -103,7 +104,7 @@ def random_nested(num_vars, initial = None, core = None, partitioned = None):
                 if input_table[j] == desired[start]:
                     return (initial + i) % 2
                 start += 1
-        return core
+        return (core + initial + len(partitioned) + 1) % 2
     result = []
     for i in range(2 ** num_vars):
         state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]

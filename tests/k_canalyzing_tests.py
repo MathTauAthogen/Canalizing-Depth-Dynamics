@@ -46,18 +46,18 @@ def k_canalyzing_test(num_vars, depth, num_points):
         else:
             data1[key] = 1
     data_list = data.values()
-    data1_list = data1.values()
-    plt.bar(range(len(data)), list(data.values()), align='center')
-    plt.bar(range(len(data1)), list(data1.values()), align='center')
+    plt.bar(data.keys(), list(data.values()), align='center')
     print "Functions found: " + str(len(data))
     print sps.chisquare(data_list)
     for i in data:
         print i + "  " + str(data[i])
     plt.show()
+    # plt.bar(range(len(data1)), list(data1.values()), align='center')
+    # plt.show()
     
 ## Test case ##
 #partition_test(5, 100)
 start = time()
-k_canalyzing_test(2, 2, 10000)
+k_canalyzing_test(3, 3, 10000)
 end = time()
 print(end-start)
