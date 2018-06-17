@@ -71,21 +71,30 @@ def random_k_canalyzing(num_vars, depth):
 #         result.append(evaluator(state))
 #     return dds.Truth(result)
 
-def random_nested(num_vars, initial = None):
+def random_nested(num_vars, initial = None, core = None, partitioned = None):
     """Generates a random nested canalyzing function with the given initial value"""
     if initial == None:
         initial = random.randint(0, 1)
-    core = random.randint(0, 1)
+    if core == None:
+        core = random.randint(0, 1)
     variables = range(num_vars)
-    partitioned = partition.random_partition(variables)
+    if(partitioned == None):
+        partitioned = partition.random_partition(variables)
     desired = [random.randint(0, 1) for _ in range(num_vars)]
-    if len(partitioned) != 1 and len(partitioned[-1]) == 1 and core == 1:
-        return random_nested(num_vars, initial)
+    if core == 1:
+        if len(partitioned) != 1:
+            if len(partitioned[-1]) == 1:
+                return random_nested(num_vars)#, initial)#, core)
+        else:
+            if len(partitioned[-1]) == 1:
+                if initial == 1:
+                    return random_nested(num_vars)#, initial)#, core)
+    test_string = str(initial)+str(core)+str(partitioned)+str(desired)#Debugging
 #    if core == 1 and len(partitioned) == 1 and len(partitioned[0]) == 1:
 #    if len(partitioned) == 1 and len(partitioned[0]) == 1:
 #        return random_nested(num_vars)
-    if (initial + len(partitioned) + 1) % 2 == core:
-        return random_nested(num_vars, initial)
+    #if (initial + len(partitioned) + 1) % 2 == core:
+    #    return random_nested(num_vars)#, initial, None, partitioned)
     def evaluator(input_table):
         """Method for evaluating the function to create a truth table"""
         start = 0
@@ -99,5 +108,5 @@ def random_nested(num_vars, initial = None):
     for i in range(2 ** num_vars):
         state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]
         result.append(evaluator(state))
-    return dds.Truth(result)
+    return [dds.Truth(result),test_string]
 #print random_k_canalyzing(3, 1).return_truth_table()
