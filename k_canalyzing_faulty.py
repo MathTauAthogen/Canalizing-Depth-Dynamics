@@ -49,7 +49,7 @@ def random_k_canalyzing(num_vars, depth):
     for i in range(2 ** num_vars):
         state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]
         result.append(evaluator(state))
-    return [dds.Truth(result),test_string]
+    return dds.Truth(result)
 
 #print random_k_canalyzing(4, 4).return_truth_table()
 #print rn.random_noncanalysing_func(0).return_truth_table()
