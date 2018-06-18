@@ -44,7 +44,7 @@ def random_k_canalyzing(num_vars, depth):
                     return (initial + i) % 2
                 start += 1
         alternate = [input_table[i] for i in non_canalyzing]
-        return core.function_format(alternate)
+        return (core.function_format(alternate)+ initial + len(partitioned) + 1) % 2
     result = []
     for i in range(2 ** num_vars):
         state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]
