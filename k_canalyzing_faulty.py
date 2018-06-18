@@ -4,6 +4,15 @@ import partition
 import discrete_dynamical_system as dds
 import random_noncanalysing as rn
 
+def all_numbers_but(exceptions, maxn):
+    """Generates a list of all ints besides exceptions less than maxn."""
+    k = range(maxn)
+    temp = []
+    for i in k:
+        if i not in exceptions:
+            temp.append(i)
+    return temp
+
 def random_k_canalyzing(num_vars, depth):
     """Method to generate a random k-canalyzing function"""
     if depth == 0:
@@ -13,15 +22,19 @@ def random_k_canalyzing(num_vars, depth):
     initial = random.randint(0, 1)
     variables = range(num_vars)
     canalyzing = partition.random_subset(variables, depth)
+    non_canalyzing = all_numbers_but(canalyzing, num_vars)
     partitioned = partition.random_partition(canalyzing)
     desired = [random.randint(0, 1) for _ in range(depth)]
-    core = rn.random_noncanalysing_func(len(variables))
+    core = rn.random_noncanalysing_func(len(non_canalyzing))
 #    disallowed = (initial + len(partitioned) + 1) % 2
-    if core.return_truth_table() == [(initial + len(partitioned) + 1) % 2] * 2 ** len(variables):
-        return random_k_canalyzing(num_vars, depth)
     table = core.return_truth_table()
-    if len(partitioned) != 1 and len(partitioned[-1]) == 1 and table == [1] * 2 ** len(variables):
+    if table == [0] * 2 ** len(non_canalyzing):
         return random_k_canalyzing(num_vars, depth)
+    if len(partitioned[-1]) == 1 and len(partitioned) != 1 and table == [1] * 2 ** len(non_canalyzing):
+        return random_k_canalyzing(num_vars, depth)
+    if initial == 1 and len(partitioned[-1]) == 1 and len(partitioned) == 1 and table == [1] * 2 ** len(non_canalyzing):
+        return random_k_canalyzing(num_vars, depth)
+    test_string = str(initial)+str(core)+str(partitioned)+str(desired)
     def evaluator(input_table):
         """Method for evaluating the function to create a truth table"""
         start = 0
@@ -30,14 +43,13 @@ def random_k_canalyzing(num_vars, depth):
                 if input_table[j] == desired[start]:
                     return (initial + i) % 2
                 start += 1
-        alternate = [input_table[i] for i in variables]
-
+        alternate = [input_table[i] for i in non_canalyzing]
         return core.function_format(alternate)
     result = []
     for i in range(2 ** num_vars):
         state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]
         result.append(evaluator(state))
-    return dds.Truth(result)
+    return [dds.Truth(result),test_string]
 
 #print random_k_canalyzing(4, 4).return_truth_table()
 #print rn.random_noncanalysing_func(0).return_truth_table()
@@ -71,16 +83,12 @@ def random_k_canalyzing(num_vars, depth):
 #         result.append(evaluator(state))
 #     return dds.Truth(result)
 
-def random_nested(num_vars, initial = None, core = None, partitioned = None):
+def random_nested(num_vars):
     """Generates a random nested canalyzing function with the given initial value"""
-    if initial == None:
-        initial = random.randint(0, 1)
-    if core == None:
-        #core = random.randint(0, 1)
-        core = 1
+    initial = random.randint(0, 1)
+    core = 1
     variables = range(num_vars)
-    if(partitioned == None):
-        partitioned = partition.random_partition(variables)
+    partitioned = partition.random_partition(variables)
     desired = [random.randint(0, 1) for _ in range(num_vars)]
     if core == 1:
         if len(partitioned) != 1:
@@ -109,5 +117,5 @@ def random_nested(num_vars, initial = None, core = None, partitioned = None):
     for i in range(2 ** num_vars):
         state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]
         result.append(evaluator(state))
-    return [dds.Truth(result),test_string]
+    return dds.Truth(result)
 #print random_k_canalyzing(3, 1).return_truth_table()
