@@ -73,7 +73,7 @@ class Dynamical(object):
         self.functions = functions
         self.current = initial
         #temp = map(list, zip(*functions))
-        temp = functions.T
+        temp = np.matrix(functions).T
         power_vector = np.power(2, np.arange(temp.shape[1] - 1, -1, -1)).T
         self.states = np.dot(temp, power_vector)[0,:].tolist()[0]
         #print(self.states)

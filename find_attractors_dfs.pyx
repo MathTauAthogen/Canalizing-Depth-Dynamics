@@ -24,7 +24,7 @@ cdef dfs(int vertex, int old_v, graph, visited, the_vars):
 
 def to_state_function(functions):
     """Converts a numpy matrix of functions to a state function"""
-    temp = functions.T
+    temp = np.matrix(functions).T
     power_vector = np.power(2, np.arange(temp.shape[1] - 1, -1, -1)).T
     return np.dot(temp, power_vector)[0, :].tolist()[0]
 
