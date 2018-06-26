@@ -1,6 +1,7 @@
 """Program for generating random k-canalyzing functions"""
 import random
 import partition
+import pyximport; pyximport.install()
 import discrete_dynamical_system as dds
 import random_noncanalysing as rn
 
