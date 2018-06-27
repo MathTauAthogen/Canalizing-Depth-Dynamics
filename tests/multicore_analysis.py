@@ -23,6 +23,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 graphs=[]
+usedgraphs=[]
 names=[]
 #END
 
@@ -32,19 +33,23 @@ names=[]
 #BEGIN
 def plotall(num_vars):
     for i, val in enumerate(graphs):
-        plt.subplot()
-        plt.title(names[i])
-        bar_range = range(0, 2 ** num_vars)
-        plt.hist(val, bar_range, ec='black')
-        plt.show()
+        if not (val in usedgraphs):
+            plt.subplot()
+            plt.title(names[i])
+            bar_range = range(0, 2 ** num_vars)
+            plt.hist(val, bar_range, ec='black')
+            plt.show()
+            usedgraphs.append(val)
 
-def addto(func, vals, name):
-    if not name in names:    
-        names.append(name)
+def addto(func, vals, name, filename):
+    filename=filename.split("_num")[0]
+    newname=name+":"+filename
+    if not newname in names:    
+        names.append(newname)
         graphs.append([])
         graphs[len(graphs)-1].append(func(vals))
     else:
-        i=names.index(name)
+        i=names.index(newname)
         graphs[i].append(func(vals))
 #END
 
@@ -62,8 +67,8 @@ def main(filename, num_vars):
             basins=transposed[1].tolist()[0]
 
             #Add more graphs here
-            addto(lambda x:sum(x)/len(x), attractors, "Average attractor size")
-            addto(lambda x:len(x), attractors, "Average number of attractors")
+            addto(lambda x:sum(x)/len(x), attractors, "Average attractor size", filename)
+            addto(lambda x:len(x), attractors, "Average number of attractors", filename)
 
     #Plot the graphs here
     plotall(num_vars)
