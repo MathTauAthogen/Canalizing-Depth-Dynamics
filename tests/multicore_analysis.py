@@ -22,13 +22,6 @@ import ast
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
-parser = argparse.ArgumentParser(description='Make a discrete dynamical system at random given the number of variables and canalyzing depth.')
-parser.add_argument('num_vars', type= int)
-parser.add_argument('canalyzing_depth', type=int)
-parser.add_argument('cores', type= int)
-parser.add_argument('num', type=int)
-parser.add_argument('file_name')
-args = parser.parse_args()
 graphs=[]
 names=[]
 #END
@@ -57,8 +50,8 @@ def addto(func, vals, name):
 
 #----------------------------------------------------------------------------------------------------
 
-def main():
-    with open("num_vars="+str(args.num_vars)+" depth="+str(args.canalyzing_depth)+" num="+str(args.num)+" cores="+str(args.cores)+" time="+str(args.file_name)+".txt", "r") as file:
+def main(filename):
+    with open(filename, "r") as file:
         for line in file:
             listform=ast.literal_eval(line)
             transposed=np.matrix(listform).T
@@ -80,5 +73,12 @@ def main():
 #Run main
 #BEGIN
 if __name__=="__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Make a discrete dynamical system at random given the number of variables and canalyzing depth.')
+    parser.add_argument('num_vars', type= int)
+    parser.add_argument('canalyzing_depth', type=int)
+    parser.add_argument('cores', type= int)
+    parser.add_argument('num', type=int)
+    parser.add_argument('file_name')
+    args = parser.parse_args()
+    main("num_vars="+str(args.num_vars)+" depth="+str(args.canalyzing_depth)+" num="+str(args.num)+" cores="+str(args.cores)+" time="+str(args.file_name)+".txt")
 #END

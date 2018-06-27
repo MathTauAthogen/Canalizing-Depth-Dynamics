@@ -22,7 +22,7 @@ for i in range(args.num_vars):
 	funcs.append(kc.random_k_canalyzing(args.num_vars, args.canalyzing_depth).return_truth_table())
 tuples=fad.find_attractors_and_basins(funcs)
 
-with open("num_vars="+str(args.num_vars)+" depth="+str(args.canalyzing_depth)+" num="+str(args.num)+" cores="+str(args.cores)+" time="+str(args.file_name)+".txt", "a") as file:
+with open("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+"_num="+str(args.num)+"_cores="+str(args.cores)+"_time="+str(args.file_name)+".txt", "a") as file:
 	print >>file, str(tuples)
 #end=time.time()
 #print(end-start)
