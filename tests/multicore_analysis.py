@@ -30,11 +30,11 @@ names=[]
 
 #Also boilerplate stuff that can be reused
 #BEGIN
-def plotall():
+def plotall(num_vars):
     for i, val in enumerate(graphs):
         plt.subplot()
         plt.title(names[i])
-        bar_range = range(0, 2 ** args.num_vars)
+        bar_range = range(0, 2 ** num_vars)
         plt.hist(val, bar_range, ec='black')
         plt.show()
 
@@ -50,7 +50,7 @@ def addto(func, vals, name):
 
 #----------------------------------------------------------------------------------------------------
 
-def main(filename):
+def main(filename, num_vars):
     with open(filename, "r") as file:
         for line in file:
             listform=ast.literal_eval(line)
@@ -66,7 +66,7 @@ def main(filename):
             addto(lambda x:len(x), attractors, "Average number of attractors")
 
     #Plot the graphs here
-    plotall()
+    plotall(num_vars)
 
 #---------------------------------------------------------------------------------------------------
 
@@ -80,5 +80,5 @@ if __name__=="__main__":
     parser.add_argument('num', type=int)
     parser.add_argument('file_name')
     args = parser.parse_args()
-    main("num_vars="+str(args.num_vars)+" depth="+str(args.canalyzing_depth)+" num="+str(args.num)+" cores="+str(args.cores)+" time="+str(args.file_name)+".txt")
+    main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+"_num="+str(args.num)+"_cores="+str(args.cores)+"_time="+str(args.file_name)+".txt", args.num_vars)
 #END
