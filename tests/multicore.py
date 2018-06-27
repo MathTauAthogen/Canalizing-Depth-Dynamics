@@ -8,7 +8,7 @@ pyximport.install()
 import find_attractors_dfs as fad
 import time
 
-start=time.time()
+#start=time.time()
 parser = argparse.ArgumentParser(description='Make a discrete dynamical system at random given the number of variables and canalyzing depth.')
 parser.add_argument('num_vars', type= int)
 parser.add_argument('canalyzing_depth', type=int)
@@ -24,5 +24,5 @@ tuples=fad.find_attractors_and_basins(funcs)
 
 with open("num_vars="+str(args.num_vars)+" depth="+str(args.canalyzing_depth)+" num="+str(args.num)+" cores="+str(args.cores)+" time="+str(args.file_name)+".txt", "a") as file:
 	print >>file, str(tuples)
-end=time.time()
-print(end-start)
+#end=time.time()
+#print(end-start)
