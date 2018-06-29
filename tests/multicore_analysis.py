@@ -83,7 +83,6 @@ if __name__=="__main__":
     parser.add_argument('canalyzing_depth', type=int)
     parser.add_argument('cores', type= int)
     parser.add_argument('num', type=int)
-    parser.add_argument('file_name')
     args = parser.parse_args()
-    main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+"_num="+str(args.num)+"_cores="+str(args.cores)+"_time="+str(args.file_name)+".txt", args.num_vars)
+    main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".txt", args.num_vars)
 #END
