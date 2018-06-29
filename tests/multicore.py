@@ -18,10 +18,10 @@ args = parser.parse_args()
 
 funcs=[]
 for i in range(args.num_vars):
-	funcs.append(kc.random_k_canalyzing(args.num_vars, args.canalyzing_depth).return_truth_table())
+    funcs.append(kc.random_k_canalyzing(args.num_vars, args.canalyzing_depth).return_truth_table())
 tuples=fad.find_attractors_and_basins(funcs)
 
 with open("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".txt", "a") as file:
-	print >>file, str(tuples)
+    print >>file, str(tuples)
 #end=time.time()
 #print(end-start)
