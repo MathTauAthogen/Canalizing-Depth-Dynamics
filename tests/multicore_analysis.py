@@ -22,6 +22,7 @@ import ast
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
+import json
 graphs=[]
 usedgraphs=[]
 names=[]
@@ -57,8 +58,8 @@ def addto(func, vals, name, filename):
 
 def main(filename, num_vars):
     with open(filename, "r") as file:
-        for line in file:
-            listform=ast.literal_eval(line)
+        filel=json.load(file)
+        for listform in filel:
             transposed=np.matrix(listform).T
 
             #Get only attractor sizes
@@ -79,10 +80,10 @@ def main(filename, num_vars):
 #BEGIN
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Make a discrete dynamical system at random given the number of variables and canalyzing depth.')
+    parser.add_argument('num', type= int)
+    parser.add_argument('cores', type=int)
     parser.add_argument('num_vars', type= int)
     parser.add_argument('canalyzing_depth', type=int)
-    parser.add_argument('cores', type= int)
-    parser.add_argument('num', type=int)
     args = parser.parse_args()
-    main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".txt", args.num_vars)
+    main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".json", args.num_vars)
 #END
