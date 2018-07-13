@@ -46,7 +46,7 @@ def k_canalyzing_test(num_vars, depth, num_points):
     """Method to test distribution of random_k_canalyzing"""
     data = dict()
     #data1 = dict()
-    for _ in range(num_points * (2 ** num_vars)):
+    for _ in range(num_points):
         func = kc.random_k_canalyzing(num_vars, depth)
         #table = func[0].return_truth_table()
         table = func.return_truth_table()
