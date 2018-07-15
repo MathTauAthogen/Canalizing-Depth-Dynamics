@@ -37,15 +37,13 @@ def plotall(num_vars):
     for i, val in enumerate(graphs):
         if not (val in usedgraphs):
             maxval = max(val)
-            newval = []
-            for v in val:
-                newval.append(maxval-v+1)
+            newval = val
             plt.subplot()
             plt.title(names[i])
             bar_range = range(0, max(newval) + 1)
-            plt.plot(bar_range, [math.log(newval.count(a)) if newval.count(a)!=0 else 0 for a in range(max(newval) + 1)], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
-            plt.show()
+            plt.plot(bar_range, [newval.count(a) for a in range(max(newval) + 1)], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
             usedgraphs.append(newval)
+            plt.show()
 
 def addto(func, vals, name, filename):
     filename=filename.split("_num")[0]
@@ -73,8 +71,8 @@ def main(filename, num_vars):
             basins=transposed[1].tolist()[0]
 
             #Add more graphs here
-            addto(lambda x:sum(x)/len(x), attractors, "Average attractor size", filename)
-            addto(lambda x:len(x), attractors, "Average number of attractors", filename)
+            for i in basins:
+                addto(lambda x:x, i, "Basin sizes", filename)
 
     #Plot the graphs here
     plotall(num_vars)
