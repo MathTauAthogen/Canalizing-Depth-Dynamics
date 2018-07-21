@@ -33,13 +33,13 @@ names=[]
 
 #Also boilerplate stuff that can be reused
 #BEGIN
-def plotall(num_vars):
+def plotall(num_vars, depth):
     for i, val in enumerate(graphs):
         if not (val in usedgraphs):
             maxval = max(val)
             newval = val
             plt.subplot()
-            plt.title(names[i])
+            plt.title(names[i] + ", number of variables = " + str(num_vars) + ", canalizing depth = " + str(depth) + ",\n Number of samples = " + str(len(newval))+".")
             bar_range = range(0, max(newval) + 1)
             plt.plot(bar_range, [math.log(newval.count(a)) if newval.count(a)!=0 else 0 for a in range(max(newval) + 1)], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
             usedgraphs.append(newval)
@@ -47,7 +47,7 @@ def plotall(num_vars):
 
 def addto(func, vals, name, filename):
     filename=filename.split("_num")[0]
-    newname=name+":"+filename
+    newname=name
     if not newname in names:    
         names.append(newname)
         graphs.append([])
@@ -59,7 +59,7 @@ def addto(func, vals, name, filename):
 
 #----------------------------------------------------------------------------------------------------
 
-def main(filename, num_vars):
+def main(filename, num_vars, depth):
     with open(filename, "r") as file:
         filel=json.load(file)
         for listform in filel:
@@ -71,11 +71,11 @@ def main(filename, num_vars):
             basins=transposed[1].tolist()[0]
 
             #Add more graphs here
-            addto(lambda x:sum(x)/len(x), attractors, "Average attractor size", filename)
-            addto(lambda x:len(x), attractors, "Average number of attractors", filename)
+            addto(lambda x:sum(x)/len(x), attractors, "Typical attractor size", filename)
+            addto(lambda x:len(x), attractors, "Typical number of attractors", filename)
 
     #Plot the graphs here
-    plotall(num_vars)
+    plotall(num_vars, depth)
 
 #---------------------------------------------------------------------------------------------------
 
@@ -83,10 +83,8 @@ def main(filename, num_vars):
 #BEGIN
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Make a discrete dynamical system at random given the number of variables and canalyzing depth.')
-    parser.add_argument('num', type= int)
-    parser.add_argument('cores', type=int)
     parser.add_argument('num_vars', type= int)
     parser.add_argument('canalyzing_depth', type=int)
     args = parser.parse_args()
-    main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".json", args.num_vars)
+    main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".json", args.num_vars, args.canalyzing_depth)
 #END
