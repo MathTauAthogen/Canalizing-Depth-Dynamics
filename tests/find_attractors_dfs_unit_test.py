@@ -4,8 +4,8 @@ pyximport.install()
 import numpy as np
 
 import sys
-sys.path.insert(0, '../')
-import find_attractors_dfs as fa
+sys.path.insert(0, '../core')
+import find_attractors as fa
 
 class TestAttractors(unittest.TestCase):
     def setUp(self):

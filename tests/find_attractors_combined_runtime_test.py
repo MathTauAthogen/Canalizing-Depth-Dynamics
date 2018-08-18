@@ -5,10 +5,8 @@ import random
 import numpy as np
 
 import sys
-sys.path.insert(0, '../')
-import find_attractors_dfs as fa
-import find_attractors_non_dfs_runtime
-#from random_function import random_function
+sys.path.insert(0, '../core')
+import find_attractors as fa
 
 def random_function(degree):
     """Generates a random function in n variables"""
@@ -23,10 +21,8 @@ num = 1
 start = time.time()
 for j in range(num):
     function_list = [np.matrix(
-        [random_function(n) for j in range(n)]) for j in range(cases)]#Move in or out
+        [random_function(n) for j in range(n)]) for j in range(cases)]
     for i in range(cases):
-    	#calculations = fa.FindAttractors(function_list[i])
-    	#calculations.get_attractors_and_bassinets()
     	fa.find_attractors_and_basins(function_list[i])
 end = time.time()
 print (end-start)/num

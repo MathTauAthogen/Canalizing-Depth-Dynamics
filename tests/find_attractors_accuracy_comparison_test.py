@@ -5,10 +5,9 @@ import random
 import numpy as np
 
 import sys
-sys.path.insert(0, '../')
-import find_attractors as fa
-import find_attractors_dfs as fa2
-#from random_function import random_function
+sys.path.insert(0, '../core')
+import find_attractors as fa2
+import find_attractors_old as fa
 
 def random_function(degree):
     """Generates a random function in n variables"""

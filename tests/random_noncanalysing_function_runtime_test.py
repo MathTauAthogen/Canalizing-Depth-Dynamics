@@ -5,7 +5,7 @@ import time
 pyximport.install()
 
 import sys
-sys.path.insert(0, '../')
+sys.path.insert(0, '../core')
 import discrete_dynamical_system as bp
 import random_noncanalysing as rnc
 

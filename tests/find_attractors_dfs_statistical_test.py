@@ -7,8 +7,8 @@ import numpy as np
 import unittest
 
 import sys
-sys.path.insert(0, '../')
-import find_attractors_dfs as fa
+sys.path.insert(0, '../core')
+import find_attractors as fa
 
 def random_function(num_vars):
     """Generates a random function in num_vars variables"""
