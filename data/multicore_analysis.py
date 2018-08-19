@@ -86,4 +86,4 @@ if __name__=="__main__":
     parser.add_argument('canalyzing_depth', type=int)
     args = parser.parse_args()
     main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".json", args.num_vars)
-#END
+:END
