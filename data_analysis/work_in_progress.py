@@ -24,6 +24,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 import math
+from scipy import stats
 graphs=[]
 usedgraphs=[]
 names=[]
@@ -35,21 +36,25 @@ names=[]
 #BEGIN
 def plotall(num_vars, depth):
     for i, val in enumerate(graphs):
-        if not (val in usedgraphs):
+        #if not (val in usedgraphs):
             maxval = max(val)
             newval = val
             plt.subplot()
             plt.title(names[i] + ", number of variables = " + str(num_vars) + ", canalizing depth = " + str(depth) + ",\n Number of samples = " + str(len(newval))+".")
-            bar_range = list(set(val))
-            bar_range.sort()
-            #plt.plot(bar_range, [newval.count(a) for a in bar_range],color="green", marker="o")#math.log(newval.count(a)) if newval.count(a)!=0 else 0 for a in bar_range], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
-            plt.plot(bar_range, math.log(newval.count(a)) if newval.count(a)!=0 else 0 for a in bar_range], color='green', marker='o')
-            usedgraphs.append(newval)
+            bar_range = range(0, max(newval) + 1)
+            plt.plot(bar_range, [math.log(newval.count(a)) if newval.count(a)!=0 else 0 for a in range(max(newval) + 1)], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
+            #usedgraphs.append(newval)
+            heights=[math.log(newval.count(a)) if newval.count(a)!=0 else 0 for a in range(max(newval) + 1)]
+            end = [a for a, n in enumerate(heights) if n == 0][1]+1
+            print(len(bar_range))
+            print(len(heights))
+            slope, intercept, r_value, p_value, std_err = stats.linregress(bar_range[:end], heights[:end])
+            print(names[i] + ", number of variables = " + str(num_vars) + ", canalizing depth = " + str(depth) + ",\n Number of samples = " + str(len(newval))+" --> R = "+str(r_value ** 2))
+            print(end)
             plt.show()
 
 def addto(func, vals, name, filename):
-    filename=filename.split("_num")[0]
-    newname=name
+    newname=name+":"+filename
     if not newname in names:    
         names.append(newname)
         graphs.append([])
@@ -73,11 +78,12 @@ def main(filename, num_vars, depth):
             basins=transposed[1].tolist()[0]
 
             #Add more graphs here
-            addto(lambda x:len(x), attractors, "Number of attractors", filename)
-            #addto(lambda x:np.var(x), attractors, "Attractor variance", filename)
-            #addto(lambda x:np.var(x), basins, "Basin variance", filename)
+            #for i in basins:
+            addto(lambda x:sum(x)/len(x), attractors, "Typical attractor size", filename)
+            addto(lambda x:len(x), attractors, "Typical number of attractors", filename)
+            addto(lambda x:len(x), basins, "Typical number of basins", filename)
 
-#Plot the graphs here
+    #Plot the graphs here
     plotall(num_vars, depth)
 
 #---------------------------------------------------------------------------------------------------
@@ -89,5 +95,5 @@ if __name__=="__main__":
     parser.add_argument('num_vars', type= int)
     parser.add_argument('canalyzing_depth', type=int)
     args = parser.parse_args()
-    main("num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".json", args.num_vars, args.canalyzing_depth)
+    main("data/num_vars="+str(args.num_vars)+"_depth="+str(args.canalyzing_depth)+".json", args.num_vars, args.canalyzing_depth)
 #END
