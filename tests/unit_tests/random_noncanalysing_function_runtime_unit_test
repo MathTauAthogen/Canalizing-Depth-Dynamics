@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import pyximport
 import time
 pyximport.install()
-
+import unittest
 import sys
-sys.path.insert(0, '../core')
+sys.path.insert(0, '../../core')
 import discrete_dynamical_system as bp
 import random_noncanalysing as rnc
 
@@ -18,16 +18,22 @@ def intersect(list_1, list_2):
 
 def main(num, amount):
     """Does a distribution with num data points"""
-    plt.subplot()
-    plt.title("Random Noncanalysing Function Distribution")
     start = time.time()
     data = [int(''.join(map(str, rnc.random_noncanalysing_func(amount).return_truth_table())), 2) for i in range(num)]
     end = time.time()
-    print (end-start)/num
-    bar_range = [i for i in range(0, 2 ** (2 ** amount))]
-    plt.hist(data, bar_range, ec='black')
-    plt.show()
-    
-n = 3
-for i in range(5):
-	main(138 * 1000, n)
+    return (end-start)/num
+
+class Test(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_large(self):
+        n = 3
+        self.assertLess(main(138 * 1000, n),0.001)
+
+    def test_small(self):
+        n = 2
+        self.assertLess(main(1000, n),0.001)
+
+if __name__=='__main__':
+    unittest.main()

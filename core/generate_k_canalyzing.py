@@ -25,7 +25,7 @@ def random_k_canalyzing(num_vars, depth):
     M_i = random_partition.random_partition(canalyzing)
     offsets = [random.randint(0, 1) for _ in range(depth)]
     core = rn.random_noncanalysing_func(len(non_canalyzing))
-    core_table = core.return_truth_core_table()
+    core_table = core.return_truth_table()
     if core_table == [0] * 2 ** len(non_canalyzing):
         return random_k_canalyzing(num_vars, depth)
     if len(M_i[-1]) == 1 and len(M_i) != 1 and core_table == [1] * 2 ** len(non_canalyzing):

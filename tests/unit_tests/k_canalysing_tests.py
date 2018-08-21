@@ -2,15 +2,18 @@
 from time import time
 import sys
 import pyximport
+import sys
+import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as sps
 pyximport.install()
-sys.path.insert(0, '../core')
+sys.path.insert(0, '../../core')
 import random_partition as rp
 import generate_k_canalyzing as kc
+import unittest
 
 def subset_test(num_vars, size):
-    """Method to test uniformity of random partitions"""
+    """Method to test uniformity of random partition."""
     data = dict()
     for _ in range(10000):
         variables = range(num_vars)
@@ -20,26 +23,7 @@ def subset_test(num_vars, size):
             data[key] += 1
         else:
             data[key] = 1
-    plt.bar(range(len(data)), list(data.values()), align='center')
-    plt.show()
-
-def partition_test(num_vars, num_points):
-    """Method to test uniformity of random partitions"""
-    data = dict()
-    for _ in range(int(partition.fubini(num_vars)) * num_points):
-        variables = range(num_vars)
-        part = rp.random_partition(variables)
-        key = " ".join(["".join([str(j) for j in i]) for i in part])
-        if key in data:
-            data[key] += 1
-        else:
-            data[key] = 1
-    data_list = data.values()
-    plt.bar(range(len(data)), list(data.values()), align='center')
-    difference = len(data) - partition.fubini(num_vars)
-    print "Found number of functions - number of desired functions : " + str(difference)
-    print sps.chisquare(data_list)
-    plt.show()
+    return data.values()
 
 def k_canalyzing_test(num_vars, depth, num_points):
     """Method to test distribution of random_k_canalyzing"""
@@ -64,16 +48,24 @@ def systematic_k_test(max_vars, num_points):
         for j in range(i + 1):
             key = str(i) + " " + str(j)
             data[key] = k_canalyzing_test(i, j, num_points)
-            print key + str(" ") + str(data[key])
+    return data.values()
 
-## Test case ##
-#partition_test(5, 100)
+## Test cases ##
 #subset_test(3, 2)
 #start = time()
 #k_canalyzing_test(3, 2, 10000)
 #end = time()
 #print(end-start)
-start = time()
-systematic_k_test(4, 10000)
-end = time()
-print end - start
+#start = time()
+#systematic_k_test(4, 10000)
+#end = time()
+#print end - start
+
+class Tests(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_subset(self):
+        self.assertLess(sps.variation(subset_test(3,2)), 0.1)
+
+if __name__=='__main__':
+    unittest.main()
