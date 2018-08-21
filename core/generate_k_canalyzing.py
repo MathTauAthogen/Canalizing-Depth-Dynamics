@@ -18,8 +18,6 @@ def random_k_canalyzing(num_vars, depth):
     """Method to generate a random k-canalyzing function"""
     if depth == 0:
         return rn.random_noncanalysing_func(num_vars)
-    if num_vars == depth:
-        return random_nested(num_vars)
     b = random.randint(0, 1)
     variables = range(num_vars)
     canalyzing = random_partition.random_subset(variables, depth)
@@ -47,41 +45,6 @@ def random_k_canalyzing(num_vars, depth):
         alternate = [input_core_table[i] for i in non_canalyzing]
         return (core.function_format(alternate)+ b + len(M_i) + 1) % 2
     ####   
-
-    result = []
-    for i in range(2 ** num_vars):
-        state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]
-        result.append(evaluator(state))
-    return dds.Truth(result)
-
-def random_nested(num_vars):
-    """Generates a random nested canalyzing function with the given b value"""
-    b = random.randint(0, 1)
-    core = 1
-    variables = range(num_vars)
-    M_i = random_partition.random_partition(variables)
-    offsets = [random.randint(0, 1) for _ in range(num_vars)]
-    if core == 1:
-        if len(M_i) != 1:
-            if len(M_i[-1]) == 1:
-                return random_nested(num_vars)
-        else:
-            if len(M_i[-1]) == 1:
-                if b == 1:
-                    return random_nested(num_vars)
-    test_string = str(b) + str(core) + str(M_i) + str(offsets)
-
-    ####
-    def evaluator(input_core_table):
-        """Method for evaluating the function to create a truth core_table"""
-        start = 0
-        for i, subset in enumerate(M_i):
-            for j in subset:
-                if input_core_table[j] == offsets[start]:
-                    return (b + i) % 2
-                start += 1
-        return (core + b + len(M_i) + 1) % 2
-    #### 
 
     result = []
     for i in range(2 ** num_vars):
