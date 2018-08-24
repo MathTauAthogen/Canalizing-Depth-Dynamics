@@ -4,16 +4,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 import math
-graphs=[]
-usedgraphs=[]
-names=[]
-depths=[]
-nextcounter=[0]
+
+graphs = []
+usedgraphs = []
+names = []
+depths = []
+nextcounter = [0]
 
 #--------------------------------------------------3.1-----------------------------------------------------------------------------------------------------------------
 
 def get_filename(num_vars, canalyzing_depth):
-    return "data/num_vars=" + str(num_vars) + "_depth=" + str(canalyzing_depth) + ".json"
+    return "../data/num_vars=" + str(num_vars) + "_depth=" + str(canalyzing_depth) + ".json"
 
 def plot_function(f, num_vars, f_name):
     x_data = range(num_vars + 1)
@@ -99,10 +100,15 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Plot things.')
     parser.add_argument('num_vars', type= int)
     args = parser.parse_args()
-    plot_function(avg_attractor_size, args.num_vars, "Average size of an attractor")
-    plot_function(avg_attractor_count, args.num_vars, "The number of attractors")
-    plot_function(avg_total_attractors_size, args.num_vars, "Total attractors size")
-    plot_function(attractor_one, args.num_vars, "Number of steady states")
+    functions = {
+      "Average size of an attractor": avg_attractor_size,
+      "The number of attractors": avg_attractor_count,
+      "Total attractor size": avg_total_attractors_size,
+      "Proportion of steady states": attractor_one
+    }
+    for name, func in functions.iteritems():
+      plot_function(func, args.num_vars, name)
+    
     for depth in range(args.num_vars):
         main(args.num_vars,depth)
         plotall(args.num_vars)
