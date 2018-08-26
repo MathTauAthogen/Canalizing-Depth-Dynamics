@@ -8,16 +8,16 @@ import math
 def get_filename(num_vars, canalyzing_depth):
     return "../data/num_vars=" + str(num_vars) + "_depth=" + str(canalyzing_depth) + ".json"
 
-def plot(num_vars, args):
+def number_of_attractors(num_vars, args):
         val = [] 
-        filename=args[2]
+        filename=args[1]
         with open(filename, "r") as file:
             filel=json.load(file)
             for i in filel:
-                val.append(args[0](i))
+                val.append(len(i))
         maxval = max(val)
         plt.subplot()
-        plt.title(args[1] + ",\n Number of samples = " + str(len(val)) + ".")
+        plt.title(args[0] + ",\n Number of samples = " + str(len(val)) + ".")
         bar_range = list(set(val))
         bar_range.sort()
         plt.plot(bar_range, [math.log(val.count(a)) if val.count(a) != 0 else 0 for a in bar_range], color = 'green', marker = 'o')
@@ -32,4 +32,4 @@ if __name__=="__main__":
     args = parser.parse_args()
     numvars = args.num_vars
     depth = args.canalyzing_depth
-    plot(args.num_vars, [lambda x:len(x), "Number of attractors"  + ", number of variables = " + str(args.num_vars) + ", canalizing depth = " + str(depth), get_filename(args.num_vars,depth)])
+    number_of_attractors(args.num_vars, ["Number of attractors"  + ", number of variables = " + str(args.num_vars) + ", canalizing depth = " + str(depth), get_filename(args.num_vars,depth)])
