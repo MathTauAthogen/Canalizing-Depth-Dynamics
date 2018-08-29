@@ -11,6 +11,7 @@ sys.path.insert(0, '../../core')
 import random_partition as rp
 import generate_k_canalyzing as kc
 import unittest
+import numpy as np
 
 def subset_test(num_vars, size):
     """Method to test uniformity of random partition."""
@@ -31,7 +32,6 @@ def k_canalyzing_test(num_vars, depth, num_points):
     #data1 = dict()
     for _ in range(num_points):
         func = kc.random_k_canalyzing(num_vars, depth)
-        #table = func[0].return_truth_table()
         table = func.return_truth_table()
         key = "".join([str(i) for i in table])
         if key in data:
@@ -39,7 +39,8 @@ def k_canalyzing_test(num_vars, depth, num_points):
         else:
             data[key] = 1
     data_list = data.values()
-    return sps.chisquare(data_list)
+    print(data_list, sps.chisquare(data_list))
+    return [data_list, sps.chisquare(data_list)]
 
 def systematic_k_test(max_vars, num_points):
     """Systematically tests each function type with at most max_vars variables"""
@@ -48,24 +49,32 @@ def systematic_k_test(max_vars, num_points):
         for j in range(i + 1):
             key = str(i) + " " + str(j)
             data[key] = k_canalyzing_test(i, j, num_points)
-    return data.values()
-
-## Test cases ##
-#subset_test(3, 2)
-#start = time()
-#k_canalyzing_test(3, 2, 10000)
-#end = time()
-#print(end-start)
-#start = time()
-#systematic_k_test(4, 10000)
-#end = time()
-#print end - start
+    return min([i[1][1] for i in data.values()])
+def partition_test(num_vars, num_points):
+    """Method to test uniformity of random rp."""
+    data = dict()
+    for _ in range(int(rp.fubini(num_vars)) * num_points):
+        variables = range(num_vars)
+        part = rp.random_partition(variables)
+        key = " ".join(["".join([str(j) for j in i]) for i in part])
+        if key in data:
+            data[key] += 1
+        else:
+            data[key] = 1
+    data_list = data.values()
+    plt.bar(range(len(data)), list(data.values()), align='center')
+    difference = len(data) - rp.fubini(num_vars)
+    return difference
 
 class Tests(unittest.TestCase):
     def setUp(self):
         pass
     def test_subset(self):
-        self.assertLess(sps.variation(subset_test(3,2)), 0.1)
+        self.assertLess(sps.variation(subset_test(3, 2)), 0.1)
+    def test_systematic_k(self):
+        self.assertLess(systematic_k_test(3, 10000), 0.05)
+    def test_all_partitions_present(self):
+        self.assertEqual(partition_test(5, 100),0.0)
 
 if __name__=='__main__':
     unittest.main()
