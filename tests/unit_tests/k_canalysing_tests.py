@@ -39,7 +39,6 @@ def k_canalyzing_test(num_vars, depth, num_points):
         else:
             data[key] = 1
     data_list = data.values()
-    print(data_list, sps.chisquare(data_list))
     return [data_list, sps.chisquare(data_list)]
 
 def systematic_k_test(max_vars, num_points):

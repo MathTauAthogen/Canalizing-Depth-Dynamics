@@ -33,7 +33,13 @@ class TestAttractors(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_partitions_fubini(self):
+    def test_partitions_fubini_7(self):
+        self.assertEqual(partition_test(4), rp.fubini(4))
+
+    def test_partitions_fubini_3(self):
+        self.assertEqual(partition_test(3), rp.fubini(3))
+
+    def test_partitions_fubini_5(self):
         self.assertEqual(partition_test(5), rp.fubini(5))
 
     def test_canalyzing_number(self):
