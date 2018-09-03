@@ -43,7 +43,7 @@ def attractor_one(data):
     total = 0.0
     for dds in data:
         counter += len([i for i in dds if i[0] == 1])
-        total + =len(dds)
+        total += len(dds)
     return counter / total
 
 #--------------------------------------------------Plot the functions---------------------------------------------------------------------------------------------------
