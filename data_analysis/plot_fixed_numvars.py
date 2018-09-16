@@ -22,10 +22,7 @@ def plot_function(f, num_vars, f_name):
 def avg_attractor_size(data):
     total = 0
     for dds in data:
-      total_attractors = 0
-      for att in dds:
-        total_attractors += att[0]
-      total += total_attractors * 1. / len(dds) 
+      total += sum([att[0] for att in dds]) * 1. / len(dds) 
 
     return total / len(data)
 
@@ -35,7 +32,7 @@ def avg_attractor_count(data):
 def avg_total_attractors_size(data):
     total = 0
     for dds in data:
-      total += sum( map(lambda att: att[0], dds) )
+      total += sum([att[0] for att in dds])
     return total * 1. / len(data)
 
 def attractor_one(data):
