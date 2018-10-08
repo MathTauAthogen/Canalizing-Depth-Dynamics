@@ -2,11 +2,11 @@ import argparse
 from multiprocessing import Pool
 import datetime
 import sys
-sys.path.insert(0, '../')
-import k_canalyzing_not_faulty as kc
+sys.path.insert(0, '../core')
+import generate_k_canalyzing as kc
 import pyximport
 pyximport.install()
-import find_attractors_dfs as fad
+import find_attractors as fad
 import time
 import array
 import numpy
