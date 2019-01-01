@@ -71,7 +71,7 @@ class Tests(unittest.TestCase):
     def test_subset(self):
         self.assertLess(sps.variation(subset_test(3, 2)), 0.1)
     def test_systematic_k(self):
-        self.assertLess(systematic_k_test(3, 10000), 0.05)
+        self.assertGreater(systematic_k_test(3, 100000), 0.05)
     def test_all_partitions_present(self):
         self.assertEqual(partition_test(5, 100),0.0)
 
