@@ -26,28 +26,32 @@ def random_k_canalyzing(num_vars, depth):
     offsets = [random.randint(0, 1) for _ in range(depth)]
     core = rn.random_noncanalysing_func(len(non_canalyzing))
     core_table = core.return_truth_table()
-    if core_table == [0] * 2 ** len(non_canalyzing):
+    if core_table[0] == 0 and rn.is_uniform(core_table):
         return random_k_canalyzing(num_vars, depth)
-    if len(M_i[-1]) == 1 and len(M_i) != 1 and core_table == [1] * 2 ** len(non_canalyzing):
+    if len(M_i[-1]) == 1 and len(M_i) != 1 and core_table[0] == 1 and rn.is_uniform(core_table):
         return random_k_canalyzing(num_vars, depth)
-    if b == 1 and len(M_i[-1]) == 1 and len(M_i) == 1 and core_table == [1] * 2 ** len(non_canalyzing):
+    if b == 1 and len(M_i[-1]) == 1 and len(M_i) == 1 and core_table[0] == 1 and rn.is_uniform(core_table):
         return random_k_canalyzing(num_vars, depth)
 
     ####
-    def evaluator(input_core_table):
-        """Method for evaluating the function to create a truth core_table"""
+    def evaluator_non_core(a):
+        """Method for evaluating the non core part of the function to create a truth table"""
         start = 0
         for i, subset in enumerate(M_i):
             for j in subset:
-                if input_core_table[j] == offsets[start]:
+                if ((a >> (num_vars - j - 1)) % 2) == offsets[start]:
                     return (b + i) % 2
                 start += 1
-        alternate = [input_core_table[i] for i in non_canalyzing]
-        return (core.function_format(alternate)+ b + len(M_i) + 1) % 2
+        return 2
     ####   
 
-    result = []
-    for i in range(2 ** num_vars):
-        state = [int(j) for j in list(dds.binary_fixed_length(i, num_vars))]
-        result.append(evaluator(state))
+    result = [0] * (2 ** num_vars)
+    core_values_seen = 0
+    core_extra = (b + len(M_i) + 1) % 2
+    for a in xrange(2 ** num_vars):
+        result[a] = evaluator_non_core(a)
+        if result[a] == 2:
+            result[a] = core_table[core_values_seen] ^ core_extra
+            core_values_seen += 1
+
     return dds.Truth(result)

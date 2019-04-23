@@ -37,7 +37,7 @@ def get_first_vals_list(num, val):
     my_rows = []
     for k in range(num):
         my_rows.append(list(
-            [int(i)for i in dds.binary_fixed_length(k, int(math.log(num, 2)))]))
+            [int(i) for i in dds.binary_fixed_length(k, int(math.log(num, 2)))]))
     outerlist = []
     for i in range(int(math.log(num, 2))):
         innerlist = []
@@ -85,37 +85,34 @@ def overwrite_at(my_list, index, seq):
     for i, val in enumerate(seq):
         my_list[index + i] = val
 
+def is_canalizing(table, var):
+    """Checks whether var (counting from the right) is a canalizing for a function given by the table"""
+    io_pairs_seen = {}
+    for i in xrange(len(table)):
+        inp = (i >> var) % 2
+        io_pairs_seen[table[i] * 2 + inp] = 1
+        if len(io_pairs_seen) == 4:
+            return False
+    return len(io_pairs_seen) < 4
+
 #Main function
 def random_noncanalysing_func(num_vars):
-    #pylint: disable=too-many-branches
     """Generates a random non-canalysing function on num_vars variables.
     Output format notes:
     It outputs a class with the format we agreed upon.
     """
     ready = False
     while not ready:
-        table = [-1] * (2 ** num_vars)
-        first_vals_zero = get_first_vals_list(num_vars, 0)
-        first_vals_one = get_first_vals_list(num_vars, 1)
-        # i = 0
-        # temp = [table[val] for _, val in enumerate(first_vals_zero[i])]
-        # new_temp = random_int_with(2 ** (num_vars - 1), temp)
-        # merge_at(table, new_temp, first_vals_zero[i])
-        table = random_int_with(2 ** num_vars, table)
-        #Fix up stuff here
+        table = [random.getrandbits(1) for _ in xrange(2 ** num_vars)]
         ready = True
         for i in range(num_vars):
-            temp = [table[a] for a in first_vals_zero[i]]
-            if is_uniform(temp):
-                ready = False
-        for i in range(num_vars):
-            temp = [table[a] for a in first_vals_one[i]]
-            if is_uniform(temp):
+            if is_canalizing(table, i):
                 ready = False
         if is_uniform(table):
             ready = True
-        #End in-progress section
     return dds.Truth(table)
+
+
 
 if __name__ == "__main__":
     print(random_noncanalysing_func(3).return_truth_table())
