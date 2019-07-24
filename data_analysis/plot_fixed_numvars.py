@@ -43,6 +43,9 @@ def attractor_one(data):
         total += len(dds)
     return counter / total
 
+def amount_of_data(data):
+    return len(data)
+
 #--------------------------------------------------Plot the functions---------------------------------------------------------------------------------------------------
 
 if __name__=="__main__":
@@ -53,7 +56,8 @@ if __name__=="__main__":
       "Average size of an attractor" : avg_attractor_size,
       "The number of attractors" : avg_attractor_count,
       "Total attractor size" : avg_total_attractors_size,
-      "Proportion of steady states" : attractor_one
+      "Proportion of steady states" : attractor_one,
+      "Number of systems sampled" : amount_of_data,
     }
     for name, func in functions.iteritems():
       plot_function(func, args.num_vars, name)

@@ -32,7 +32,7 @@ def threadfunc(seed):
 
 start = time.time()
 pool = Pool(args.cores)
-filename = "num_vars=" + str(args.num_vars) + "_depth=" + str(args.canalyzing_depth) + ".json"
+filename = "./../data/num_vars=" + str(args.num_vars) + "_depth=" + str(args.canalyzing_depth) + ".json"
 loaded = []
 if(os.path.exists(filename)):
 	with open(filename, "r") as file:
