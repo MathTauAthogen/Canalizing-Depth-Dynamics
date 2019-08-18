@@ -14,8 +14,8 @@ def count_bin_ones(a):
         a = a >> 1  
     return result
 
-def f(a, b):
-    """for binary strings a and b, computes the function f from the beginning of Section 5 of the paper"""
+def h(a, b):
+    """for binary strings a and b, computes the function h from the beginning of Section 5 of the paper"""
     if a | b == b:
         return 1 / 2^(count_bin_ones(b))
     else:
@@ -27,7 +27,7 @@ def inv(a, n):
 
 def g(a, b, n):
     """For binary strings a and b of length n, computes the function g from the beginning of Section 5 of the paper"""
-    return 1 / 4 * (f(a, b) + f(inv(a, n), b) + f(a, inv(b, n)) + f(inv(a, n), inv(b, n)))
+    return 1 / 4 * (h(a, b) + h(inv(a, n), b) + h(a, inv(b, n)) + h(inv(a, n), inv(b, n)))
 
 def shift(a, n):
     """Considering a as a binary string of length n, returns its cyclic shift to the left"""
