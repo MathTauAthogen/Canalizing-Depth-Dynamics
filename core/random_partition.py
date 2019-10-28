@@ -12,7 +12,7 @@ def fubini(elements):
     for i in range(1, elements + 1):
         for j in range(1, i + 1):
             results[i] += sp.binom(i, j) * results[i - j]
-    return results[-1]
+    return results
 
 def random_subset(variables, subsize):
     """Generates a random subset of a given size from some number of variables"""
@@ -29,13 +29,14 @@ def random_partition(variables):
     k = len(variables)
     if k == 0:
         return []
-    possibilities = fubini(k)
+    fubini_list = fubini(k)
+    possibilities = fubini_list[k]
     chooser = random.randint(1, possibilities)
     counter = 0
     count = 0
     while counter < chooser:
         count += 1
-        counter += fubini(k - count) * sp.binom(k, count)
+        counter += fubini_list[k - count] * sp.binom(k, count)
     subset = random_subset(variables, count)
     left = random_partition(variables)
     left.append(subset)
