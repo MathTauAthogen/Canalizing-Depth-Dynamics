@@ -5,7 +5,7 @@ import scipy.special as sp
 def fubini(elements):
     precomputed = [1, 1, 3, 13, 75, 541, 4683, 47293, 545835, 7087261, 102247563, 1622632573, 28091567595, 526858348381, 10641342970443, 230283190977853, 5315654681981355, 130370767029135901]
     if elements < len(precomputed):
-      return precomputed[elements]
+      return precomputed
 
     results = [0] * (elements + 1)
     results[0] = 1
