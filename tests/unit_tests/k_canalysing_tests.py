@@ -52,7 +52,7 @@ def systematic_k_test(max_vars, num_points):
 def partition_test(num_vars, num_points):
     """Method to test uniformity of random rp."""
     data = dict()
-    for _ in range(int(rp.fubini(num_vars)) * num_points):
+    for _ in range(int(rp.fubini(num_vars)[num_vars]) * num_points):
         variables = range(num_vars)
         part = rp.random_partition(variables)
         key = " ".join(["".join([str(j) for j in i]) for i in part])
@@ -62,7 +62,7 @@ def partition_test(num_vars, num_points):
             data[key] = 1
     data_list = data.values()
     plt.bar(range(len(data)), list(data.values()), align='center')
-    difference = len(data) - rp.fubini(num_vars)
+    difference = len(data) - rp.fubini(num_vars)[num_vars]
     return difference
 
 class Tests(unittest.TestCase):
