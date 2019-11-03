@@ -13,7 +13,7 @@ import unittest
 def partition_test(num_vars):
     num_points=10
     distinct=[]
-    for _ in range(int(rp.fubini(num_vars)) * num_points):
+    for _ in range(int(rp.fubini(num_vars)[num_vars]) * num_points):
         variables = range(num_vars)
         part = rp.random_partition(variables)
         if(part not in distinct):
@@ -34,13 +34,13 @@ class TestAttractors(unittest.TestCase):
         pass
 
     def test_partitions_fubini_7(self):
-        self.assertEqual(partition_test(4), rp.fubini(4))
+        self.assertEqual(partition_test(4), rp.fubini(4)[4])
 
     def test_partitions_fubini_3(self):
-        self.assertEqual(partition_test(3), rp.fubini(3))
+        self.assertEqual(partition_test(3), rp.fubini(3)[3])
 
     def test_partitions_fubini_5(self):
-        self.assertEqual(partition_test(5), rp.fubini(5))
+        self.assertEqual(partition_test(5), rp.fubini(5)[5])
 
     def test_canalyzing_number(self):
         self.assertEqual(num_canalyzing(3, 2), 24)
