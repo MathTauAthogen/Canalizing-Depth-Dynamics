@@ -39,13 +39,13 @@ def plotall(num_vars):
             plt.subplot()
             plt.title(names[i])
             bar_range = range(0, max(newval) + 1)
-            plt.plot(bar_range, [newval.count(a) for a in range(max(newval) + 1)], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
+            #plt.plot(bar_range, [newval.count(a) for a in range(max(newval) + 1)], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
             usedgraphs.append(newval)
             #some unrelated analysis follows
             thegraph = [newval.count(a) for a in range(max(newval) + 1)][1:]
             print(thegraph.index(min(thegraph))+1)
             print(min(thegraph))
-            plt.show()
+            #plt.show()
 
 def plotsum(num_vars):
     newval = []
@@ -57,8 +57,8 @@ def plotsum(num_vars):
     plt.subplot()
     plt.title("Basin size - overall")
     bar_range = range(0, max(newval) + 1)
-    plt.plot(bar_range, [newval.count(a) for a in range(max(newval) + 1)], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
-    plt.show()
+    #plt.plot(bar_range, [newval.count(a) for a in range(max(newval) + 1)], color='green', marker='o')# ** (1./3) for a in range(max(newval))], color='green', marker='o')
+    #plt.show()
 
 
 def addto(func, vals, name, filename):
